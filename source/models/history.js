@@ -9,10 +9,10 @@ const History = connection.define('historyattendance',{
         primaryKey: true,
     },
     in: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
     },
     out:{
-        type: Sequelize.DATE
+        type: Sequelize.STRING
     },
 
     employeeId:{

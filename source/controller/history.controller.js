@@ -5,4 +5,10 @@ async function createHistory(req,res,services){
     res.send(createData);
 }
 
-module.exports = {createHistory};
+async function getHistory(req,res,services){
+    const dataClient = req.params;
+    const getData = await services.getHistoryByEmployeeId(dataClient);
+    res.send(getData);
+}
+
+module.exports = {createHistory, getHistory};
