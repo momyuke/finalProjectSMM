@@ -16,11 +16,28 @@ class EmployeeService{
         return result;
     }
 
+    async updateEmployee(employee){
+        let result;
+        try {
+            result = await Employee.update(employee, {where:{
+                employeeId : employee.employeeId
+            }});
+
+        } catch (e) {
+            logEvent.emit('APP_ERROR',{
+                logTitle: '[UPDATE-EMPLOYEE-ERROR]',
+                logMessage: e
+            });
+        }
+
+        return result;
+    }
+
     async getEmployeeById(idEmployee){
         let result;
         try{
             result = await Employee.findOne({where: {
-                id : idEmployee
+                employeeId : idEmployee
             }});
         }catch(e){
             logEvent.emit('APP_ERROR',{

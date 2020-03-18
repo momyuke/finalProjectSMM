@@ -7,8 +7,15 @@ async function createHistory(req,res,services){
 
 async function getHistory(req,res,services){
     const dataClient = req.params;
-    const getData = await services.getHistoryByEmployeeId(dataClient);
+    const getData;
+    if(dataClient.employeeId){
+        getData = await services.getHistoryByEmployeeId(dataClient);        
+    }else {
+        getData = await services.getAllHistory();
+    }
     res.send(getData);
 }
+
+
 
 module.exports = {createHistory, getHistory};
