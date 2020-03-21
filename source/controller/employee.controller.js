@@ -1,14 +1,23 @@
 
 
-const getDataEmployee = async (req,res,services) => {
-    if(req.query.id){
-      const employeeById = await services.getEmployeeById(req.query.id);
-      res.send(employeeById);
+const controlGetEmployee = async (req,res,services) => {
+    if(req.query.firstName || req.query.lastName){
+      const employeeByName = await services.getEmployeeByName(req.query);
+      res.send(employeeByName)
     }else{
         const employee = await services.getEmployee();
-        console.log(employee);
         res.send(employee);
     }
 }
 
-module.exports = {getDataEmployee};
+const controlUpdateEmployee = async (req,res,services) => {
+    const result = await services.updateEmployee(req.body);
+    res.send(result);
+}
+
+const controlCreateEmployee = async (req,res,services) => {
+    const result = await services.createEmployee(req.body);
+    res.send(result);
+}
+
+module.exports = {controlGetEmployee, controlUpdateEmployee, controlCreateEmployee};

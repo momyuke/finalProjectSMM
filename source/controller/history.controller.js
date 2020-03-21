@@ -1,16 +1,18 @@
 
-async function createHistory(req,res,services){
+const controlCreateHistory = async (req,res,services) => {
     const dataClient = req.body;
-    const createData = await services.createHistory(dataClient);
+    const createData = await services.createHistorySync(dataClient);
     res.send(createData);
 }
 
-async function getHistory(req,res,services){
+const controlGetHistory = async (req,res,services) => {
     const dataClient = req.params;
-    const getData;
-    if(dataClient.employeeId){
-        getData = await services.getHistoryByEmployeeId(dataClient);        
-    }else {
+    let getData;
+    if(dataClient.route === 'datenow'){
+        getData = await services.getHistoryByDateNow(dataClient);
+    }else if(dataClient.route){
+        getData = await services.getHistoryByEmployeeId(dataClient);
+    }else{
         getData = await services.getAllHistory();
     }
     res.send(getData);
@@ -18,4 +20,4 @@ async function getHistory(req,res,services){
 
 
 
-module.exports = {createHistory, getHistory};
+module.exports = {controlGetHistory, controlCreateHistory};

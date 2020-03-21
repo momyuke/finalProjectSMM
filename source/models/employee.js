@@ -20,6 +20,10 @@ const Employee = connection.define('employee',{
         type : Sequelize.STRING
     },
 
+    phone :{
+        type : Sequelize.STRING
+    },
+
     bloodGroup : {
         type: Sequelize.STRING
     },
@@ -33,6 +37,10 @@ const Employee = connection.define('employee',{
     },
 
     deptId :{
+        type : Sequelize.STRING
+    },
+
+    active :{
         type : Sequelize.STRING
     }
 }, { 
