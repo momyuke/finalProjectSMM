@@ -23,15 +23,16 @@ DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employee` (
-  `employeeId` int NOT NULL,
-  `firstName` varchar(12) DEFAULT NULL,
-  `lastName` varchar(5) DEFAULT NULL,
+  `employeeId` varchar(36) NOT NULL,
+  `firstName` varchar(20) DEFAULT NULL,
+  `lastName` varchar(20) NOT NULL,
   `photos` varchar(255) DEFAULT NULL,
-  `phone` bigint NOT NULL,
+  `phone` varchar(13) NOT NULL,
   `bloodGroup` varchar(5) DEFAULT NULL,
   `salary` int NOT NULL,
   `hiredDate` datetime DEFAULT NULL,
   `deptId` int NOT NULL,
+  `active` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`employeeId`),
   KEY `phone_index` (`phone`),
   KEY `salary_index` (`salary`),
@@ -45,7 +46,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES (1,'Ridwan ','Apa',NULL,9871232187,'O',100000,'2020-03-02 00:00:00',1);
+INSERT INTO `employee` VALUES ('1','Ridwan','Apa',NULL,'9871232187','O',100000,'2020-03-02 00:00:00',1,'Y'),('c54f9860-6b13-11ea-8e16-3dd56eccb0cf','Teguh','Triprasetya',NULL,'0897213123','O',100000,'2020-03-02 00:00:00',1,'Y'),('d1783c50-6b13-11ea-8e16-3dd56eccb0cf','Adella','Fitria',NULL,'0897213123','O',100000,'2020-03-02 00:00:00',1,'Y'),('d70cea80-6b13-11ea-8e16-3dd56eccb0cf','Rafly','SMM',NULL,'0897213123','O',100000,'2020-03-02 00:00:00',1,'Y'),('e98f5e30-6b0f-11ea-ad53-a7f87add0823','Ronny','Sugianto',NULL,'0897213123','O',100000,'2020-03-02 00:00:00',1,'Y');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -58,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-13 22:00:22
+-- Dump completed on 2020-03-27 21:18:29

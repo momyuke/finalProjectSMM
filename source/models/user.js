@@ -9,14 +9,41 @@ const User = connection.define('user', {
         allowNull : false
     },
     
-    username : {
+    email : {
         type : Sequelize.STRING
     }, 
 
     password : {
+        type : Sequelize.STRING
+    },
+
+    dateofbirth :{
+        type : Sequelize.DATE
+    },
+
+    placeofbirth : {
+        type : Sequelize.STRING
+    },
+
+    address : {
+        type : Sequelize.TEXT
+    },
+
+    phone :{
+        type : Sequelize.STRING
+    },
+
+    photoUrl : {
+        type : Sequelize.TEXT
+    },
+
+    bloodGroup : {
         type : Sequelize.STRING
     }
 }, {
     freezeTableName : false,
     tableName : 'user'
 });
+
+
+module.exports = User;

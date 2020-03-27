@@ -1,17 +1,17 @@
 const Sequelize = require('sequelize');
 const connection = require('../../dbConn');
 
-const History = connection.define('historyattendance',{
-    historyId : {
+const Report = connection.define('report',{
+    reportId : {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV1,
         allowNull: false,
         primaryKey: true,
     },
-    in: {
+    inTime: {
         type: Sequelize.STRING,
     },
-    out:{
+    outTime:{
         type: Sequelize.STRING
     },
 
@@ -20,7 +20,7 @@ const History = connection.define('historyattendance',{
     }
 },{
     frezeeTableName: false,
-    tableName: 'historyattendance'
+    tableName: 'report'
 });
 
-module.exports = History;
+module.exports = Report;

@@ -24,8 +24,14 @@ DROP TABLE IF EXISTS `user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `userId` varchar(36) NOT NULL,
-  `username` varchar(30) DEFAULT NULL,
-  `password` varchar(100) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `dateofbirth` date DEFAULT NULL,
+  `placeofbirth` varchar(30) DEFAULT NULL,
+  `address` text,
+  `phone` varchar(15) DEFAULT NULL,
+  `photoUrl` text,
+  `bloodGroup` varchar(2) DEFAULT NULL,
   PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -36,7 +42,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('1asw','teguh','teguh121@!');
+INSERT INTO `user` VALUES ('1asw','triprasetyat@gmail.com','teguh11','2002-01-25','jakarta','jl.perjuangan no 696969 koja jakarta utara','02197915869',NULL,'O');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-21  8:34:17
+-- Dump completed on 2020-03-27 21:18:29

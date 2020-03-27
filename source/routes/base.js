@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 const logEvent = require('../event/myEmitter');
 const routeEmployee = require('../routes/employee.route');
-const routeHistory = require('../routes/history.route');
+const routeReport = require('./report.route');
+const routeUser = require('./user.route');
 
 
+router.use('/user', routeUser);
 router.use('/employee', routeEmployee);
-router.use('/history', routeHistory);
+router.use('/report', routeReport);
 
 //No Route
 //if user go to unknown page

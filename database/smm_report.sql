@@ -16,29 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `historyattendance`
+-- Table structure for table `report`
 --
 
-DROP TABLE IF EXISTS `historyattendance`;
+DROP TABLE IF EXISTS `report`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `historyattendance` (
-  `historyId` varchar(36) NOT NULL,
-  `in` varchar(20) DEFAULT NULL,
-  `out` varchar(20) DEFAULT NULL,
+CREATE TABLE `report` (
+  `reportId` varchar(36) NOT NULL,
+  `inTime` varchar(32) DEFAULT NULL,
+  `outTime` varchar(32) DEFAULT NULL,
   `employeeId` varchar(36) DEFAULT NULL,
-  PRIMARY KEY (`historyId`)
+  PRIMARY KEY (`reportId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `historyattendance`
+-- Dumping data for table `report`
 --
 
-LOCK TABLES `historyattendance` WRITE;
-/*!40000 ALTER TABLE `historyattendance` DISABLE KEYS */;
-INSERT INTO `historyattendance` VALUES ('158ff970-6608-11ea-a0d6-79740edf1931','3/14/2020, 22:25:45','3/14/2020, 22:26:16','1');
-/*!40000 ALTER TABLE `historyattendance` ENABLE KEYS */;
+LOCK TABLES `report` WRITE;
+/*!40000 ALTER TABLE `report` DISABLE KEYS */;
+INSERT INTO `report` VALUES ('158ff970-6608-11ea-a0d6-79740edf1931','3/14/2020, 22:25:45','3/14/2020, 22:26:16','1'),('23624470-6f79-11ea-b061-af77b52be430','Friday,27 Mar 2020 07:45:02','Friday,27 Mar 2020 18:45:02','1'),('7e609940-6f78-11ea-a1ae-5f79696a773f',NULL,'Thursday, 26 Mar 2020 20:45:2','1'),('9fcf22f0-6ffe-11ea-bb14-9716eafa90f9','Saturday, 28 Mar 2020 7:45:2','Saturday, 28 Mar 2020 18:45:2','1');
+/*!40000 ALTER TABLE `report` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-21  8:34:17
+-- Dump completed on 2020-03-27 21:18:29
