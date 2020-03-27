@@ -9,6 +9,10 @@ const Employee = connection.define('employee',{
         allowNull : false
     },
 
+    deptId :{
+        type : Sequelize.INTEGER
+    },
+
     firstName : {
         type : Sequelize.STRING,
     }, 

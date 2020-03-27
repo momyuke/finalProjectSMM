@@ -1,15 +1,17 @@
 const Employee = require('../models/employee');
 const logEvent = require('../event/myEmitter');
 const {Op} = require('sequelize');
+const Department = require('../models/department');
 
 
 class EmployeeService{
     async getEmployee(){
         let result;
         try{
-            result = await Employee.findAll({where : {
-                active : 'Y'
-            }});
+            result = await Employee.findAll(
+                {include : Department},
+                {where : {active : 'Y'}}
+            );
         }catch(e){
             logEvent.emit('APP_ERROR',{
                 logTitle: '[GET-ALL-EMPLOYEE-ERROR]',

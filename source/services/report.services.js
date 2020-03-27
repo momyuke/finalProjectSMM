@@ -77,7 +77,6 @@ class ReportClass {
     async createReportSync(report) {
         let result;
         try {
-
             const checkTime = report.time;
             report.time = moment(report.time).format('dddd, D MMM YYYY k:m:s');
 
@@ -164,7 +163,7 @@ class ReportClass {
         return result;
     }
 
-    async getReportBySomeDate(report){
+    async getReportBySomeDate(report) {
 
         let result;
         try {
@@ -172,7 +171,7 @@ class ReportClass {
                 where: {
                     [Op.or]: [
                         {
-                            outTime : {[Op.like] : `%${moment(report.time).format('D MMM YYYY')}%`}
+                            outTime: { [Op.like]: `%${moment(report.time).format('D MMM YYYY')}%` }
                         },
                         {
                             inTime: { [Op.like]: `%${moment(report.time).format('D MMM YYYY')}%` },
@@ -181,23 +180,23 @@ class ReportClass {
                 }
             });
         } catch (e) {
-            
+
         }
 
         return result;
     }
 
 
-    async getReportByDateNowAndEmployeeId(report){
+    async getReportByDateNowAndEmployeeId(report) {
         let result;
         try {
             result = await Report.findOne({
                 where: {
-                    employeeId : report.employeeId,
-                    
+                    employeeId: report.employeeId,
+
                     [Op.or]: [
                         {
-                            outTime : {[Op.like] : `%${moment().format('D MMM YYYY')}%`}
+                            outTime: { [Op.like]: `%${moment().format('D MMM YYYY')}%` }
                         },
                         {
                             inTime: { [Op.like]: `%${moment().format('D MMM YYYY')}%` },
@@ -207,8 +206,8 @@ class ReportClass {
             })
         } catch (e) {
             logEvent.emit('APP_ERROR', {
-                logTitle : '[GET-REPORT-BY-DATENOW-AND-EMPLOYEEID-ERROR]',
-                logMessage : e
+                logTitle: '[GET-REPORT-BY-DATENOW-AND-EMPLOYEEID-ERROR]',
+                logMessage: e
             });
         }
 
@@ -222,7 +221,7 @@ class ReportClass {
                 where: {
                     [Op.or]: [
                         {
-                            outTime : {[Op.like] : `%${moment().format('D MMM YYYY')}%`}
+                            outTime: { [Op.like]: `%${moment().format('D MMM YYYY')}%` }
                         },
                         {
                             inTime: { [Op.like]: `%${moment().format('D MMM YYYY')}%` },
