@@ -4,11 +4,13 @@ const logEvent = require('../event/myEmitter');
 const routeEmployee = require('../routes/employee.route');
 const routeReport = require('./report.route');
 const routeUser = require('./user.route');
+const routeDepartment = require('./department.route');
 
 
-router.use('/user', routeUser);
 router.use('/employee', routeEmployee);
 router.use('/report', routeReport);
+router.use('/user', routeUser);
+router.use('/department', routeDepartment);
 
 //No Route
 //if user go to unknown page
