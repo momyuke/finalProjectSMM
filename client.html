@@ -5,14 +5,21 @@
 </head>
 <body>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js
+
+"></script>
 <script>
-const ws = new WebSocket('ws://localhost:4000/');
-ws.onopen = function() {
-    console.log('WebSocket Client Connected');
-    ws.send('Hi this is web client.');
-};
-ws.onmessage = function(e) {
-  console.log("Received: '" + e.data + "'");
-};
+const socket = io('http://localhost:4000');
+socket.on('konekuy', function(data){
+  console.log(data);
+});
+// const ws = new WebSocket('ws://localhost:4000/');
+// ws.onopen = function() {
+//     console.log('WebSocket Client Connected');
+//     ws.send('Hi this is web client.');
+// };
+// ws.onmessage = function(e) {
+//   console.log("Received: '" + e.data + "'");
+// };
 </script>
 </html>

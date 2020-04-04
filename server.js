@@ -6,17 +6,20 @@ const routes = require('./source/routes/base');
 const logEvent = require('./source/event/myEmitter');
 const loggingListener = require('./source/event/loggingListener');
 const middleware = require('./source/middleware/app-middleware');
+const io = require('socket.io');
+
 
 dotenv.config();
 loggingListener();
 app.use(middleware);
 app.use(routes);
+
 const server = http.createServer(app);
 
 server.on('error', (err) => {
-    logEvent.emit('APP_ERROR'),{
-        logTitle : '[SERVER ERROR]',
-        logMessage : err
+    logEvent.emit('APP_ERROR'), {
+        logTitle: '[SERVER ERROR]',
+        logMessage: err
     }
 });
 

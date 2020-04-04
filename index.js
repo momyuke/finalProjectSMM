@@ -2,35 +2,32 @@ const dotenv = require('dotenv');
 const connection = require('./dbConn');
 const server = require('./server');
 const logEvent = require('./source/event/myEmitter');
-const WebSocketServer = require('websocket').server;
+// const WebSocketServer = require('websocket').server;
+// const serviceWebSocket = require('./websocket');
+const io = require('socket.io')(server);
 
 dotenv.config();
 if(process.env.APP_NAME){
     connection.authenticate().then(() => {
-        server.listen(process.env.APP_PORT, '0.0.0.0');
-        if(server.listening){            
-            logEvent.emit('APP_INFO', { 
-                logTitle : '[SERVER-RUNNING]',
-                logMessage : `Server has been running in port ${process.env.APP_PORT}`
-            });
-        }
-
-        const wsServer = new WebSocketServer({
-            httpServer : server
+        server.listen(process.env.APP_PORT, '0.0.0.0', function(){ 
+            if(server.listening){            
+                logEvent.emit('APP_INFO', { 
+                    logTitle : '[SERVER-RUNNING]',
+                    logMessage : `Server has been running in port ${process.env.APP_PORT}`
+                });
+            }
+        });
+        
+        io.on('connection', function(socket){
+           console.log('user connet'); 
+           socket.emit('konekuy', 'you have been connect');
+           socket.on('disconnect', function() {
+               console.log('user disconnect');
+           })
         });
 
-        wsServer.on('request', function(request){
-            const connection = request.accept(null, request.origin);
-    
-            connection.on('message', function(message){
-                console.log('Receiver Message: ', message.utf8Data);
-                connection.sendUTF('Hi this is WebSocket server!');
-            });
-    
-            connection.on('close', function(reasonCode, description){
-                console.log('client has been disconnected');
-            });
-        });
+        // const wsServer = new WebSocketServer({httpServer : server});
+        // serviceWebSocket(wsServer);
         
     }).catch((err) => {
         logEvent.emit('APP_ERROR', {
