@@ -1,7 +1,7 @@
 
 const controlCreateReport = async (req,res,services) => {
     const dataClient = req.body;
-    const createData = await services.createReportSync(dataClient);
+    const createData = await services.createNewReport(dataClient);
     res.send(createData);
 }
 

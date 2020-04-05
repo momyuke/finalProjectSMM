@@ -8,6 +8,11 @@ const Report = connection.define('report',{
         allowNull: false,
         primaryKey: true,
     },
+
+    dateReport :{
+        type : Sequelize.DATEONLY
+    },
+
     inTime: {
         type: Sequelize.STRING,
     },

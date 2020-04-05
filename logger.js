@@ -1,5 +1,5 @@
-const bunyan = require('./node_modules/bunyan');
-const dotenv = require('./node_modules/dotenv');
+const bunyan = require('bunyan');
+const dotenv = require('dotenv');
 
 dotenv.config();
 const logConfig =  bunyan.createLogger({

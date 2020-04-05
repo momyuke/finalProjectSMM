@@ -7,129 +7,113 @@ const moment = require('moment');
 
 
 class ReportClass {
-    async createReport(report) {
-        let result;
-        try {
-            const checkTime = report.time;
-            report.time = moment(report.time).format('dddd,D MMM YYYY HH:mm:ss');
-            let checkData = await Employee.findOne({ where: { employeeId: report.employeeId } });
-            if (checkData !== null) {
-                if (moment(checkTime).hours() >= 7 && moment(checkTime).hours() <= 11) {
-                    let checkDataReport = await Report.findOne({
-                        where: {
-                            employeeId: report.employeeId,
-                            inTime: { [Op.like]: `%${moment(checkTime).format('D MMM YYYY')}%` },
-                            outTime: null
-                        }
-                    });
-                    if (checkDataReport) {
-                        result = { message: 'You have attend today' }
-                    } else {
-                        result = await Report.create({
-                            employeeId: report.employeeId,
-                            inTime: report.time
-                        });
-                    }
-                } else {
-                    let checkDataReport = await Report.findOne({
-                        where: {
-                            employeeId: report.employeeId,
-                            outTime: { [Op.like]: `%${moment(checkTime).format('D MMM YYYY')}%` },
-                        }
-                    });
-
-                    if (checkDataReport) {
-                        result = { message: 'You have been out today' }
-                    } else {
-                        checkDataReport = await Report.findOne({
-                            where: {
-                                employeeId: report.employeeId,
-                                inTime: { [Op.like]: `%${moment(checkTime).format('D MMM YYYY')}%` },
-                            }
-                        });
-
-                        if (checkDataReport) {
-                            result = checkDataReport;
-                            result.outTime = report.time;
-                            result.save();
-                        } else {
-                            result = await Report.create({
-                                employeeId: report.employeeId,
-                                outTime: report.time
-                            });
-                        }
-                    }
-                }
-            } else {
-                result = { message: 'Employee is not valid' };
-            }
-        } catch (e) {
-            logEvent.emit('APP_ERROR', {
-                logTitle: 'CREATE-NEW-REPORT-ERROR',
-                logMessage: e
-            });
+    /* 
+        
+        req.body = {
+            employeeId : 
+            time : DateTime.now().toString();
+            status: 
         }
+        
+    */
 
-        return result;
-    }
-
-
-    async createReportSync(report) {
+    async createNewReport(report) {
         let result;
+        let checkDataReport;
         try {
-            const checkTime = report.time;
-            report.time = moment(report.time).format('dddd, D MMM YYYY k:m:s');
+            const checkDataEmployee = await Employee.findByPk(report.employeeId);
+            if (checkDataEmployee !== null) {
 
-            let checkData = await Employee.findOne({
-                where: {
-                    employeeId: report.employeeId,
-                    active: 'Y'
-                }
-            });
+                const timeReport = moment(report.time).format('HH:mm:ss');
+                const dateInReport = moment(report.time, 'YYYY-MM-DD').toDate();
 
-            if (checkData) {
-                const checkDataReport = await Report.findOne({
+                checkDataReport = await Report.findOne({
                     where: {
-                        employeeId: report.employeeId,
-                        inTime: { [Op.like]: `%${moment(checkTime).format('D MMM YYYY')}%` },
-                        outTime: null
+                        outTime: { [Op.not]: null },
+                        inTime: { [Op.not]: null },
+                        dateReport: dateInReport,
+                        employeeId: report.employeeId
                     }
                 });
 
-                if (checkDataReport !== null) {
-                    result = checkDataReport;
-                    result.outTime = report.time;
-                    result.save();
+                if (checkDataReport) {
+                    return { message: 'You have been attend and out today' }
                 } else {
-                    const checkDateAttendance = await Report.findOne({
-                        where: {
-                            employeeId: report.employeeId,
-                            inTime: { [Op.like]: `%${moment(checkTime).format('D MMM YYYY')}%` },
-                            outTime: { [Op.like]: `%${moment(checkTime).format('D MMM YYYY')}%` },
-                        }
-                    });
+                    switch (report.status) {
+                        case 'IN':
+                            checkDataReport = await Report.findOne({
+                                where: {
+                                    inTime: { [Op.not]: null },
+                                    dateReport: dateInReport,
+                                    employeeId: report.employeeId
+                                }
+                            });
 
-                    if (checkDateAttendance) {
-                        result = { message: 'Sorry, you have been attend and out today' }
-                    } else {
-                        result = await Report.create({
-                            employeeId: report.employeeId,
-                            inTime: report.time
-                        });
+                            if (checkDataReport) {
+                                return { message: 'You have been attend today' }
+                            } else {
+                                result = await Report.create({
+                                    inTime: timeReport,
+                                    dateReport: dateInReport,
+                                    employeeId: employeeId
+                                });
+                            }
+                            break;
+
+                        case 'OUT':
+                            checkDataReport = await Report.findOne({
+                                where: {
+                                    inTime: { [Op.not]: null },
+                                    outTime: null,
+                                    dateReport: dateInReport,
+                                    employeeId: report.employeeId
+                                }
+                            });
+
+                            if (checkDataReport) {
+                                result = checkDataReport;
+                                result.outTime = timeReport;
+                                result.save();
+                            } else {
+                                checkDataReport = await Report.findOne({
+                                    where: {
+                                        outTime: { [Op.not]: null },
+                                        dateReport: dateInReport,
+                                        employeeId: report.employeeId
+                                    }
+                                })
+
+                                if (checkDataReport) {
+                                    return { message: 'you have been out today' }
+                                } else {
+                                    result = await Report.create({
+                                        outTime: timeReport,
+                                        dateReport: dateInReport,
+                                        employeeId: report.employeeId
+                                    });
+                                }
+                            }
+                            break;
+
+                        default:
+                            return { message: `Status ${report.status} is not valid` }
                     }
                 }
+
             } else {
-                result = { message: 'Employee not found' }
+                return { message: 'Employee is not valid' }
             }
+
         } catch (e) {
             logEvent.emit('APP_ERROR', {
-                logTitle: 'CREATE-REPORT-ATTEND-ERROR',
+                logTitle: '[CREATE-NEW-REPORT-NEW]',
                 logMessage: e
             });
         }
 
         return result;
     }
+
 
     async getReportByEmployeeId(report) {
         let result;
