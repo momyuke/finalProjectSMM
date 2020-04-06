@@ -26,13 +26,16 @@ CREATE TABLE `employee` (
   `employeeId` varchar(36) NOT NULL,
   `firstName` varchar(20) DEFAULT NULL,
   `lastName` varchar(20) NOT NULL,
+  `gender` enum('Male','Female') DEFAULT NULL,
   `photos` varchar(255) DEFAULT NULL,
   `phone` varchar(13) NOT NULL,
-  `bloodGroup` varchar(5) DEFAULT NULL,
+  `familyName` varchar(45) DEFAULT NULL,
+  `familyNumber` varchar(15) DEFAULT NULL,
+  `bloodType` enum('A','B','O','AB') DEFAULT NULL,
   `salary` int NOT NULL,
-  `hiredDate` datetime DEFAULT NULL,
+  `hiredDate` date DEFAULT NULL,
   `deptId` int NOT NULL,
-  `active` varchar(1) DEFAULT NULL,
+  `status` enum('Active','Inactive') DEFAULT NULL,
   PRIMARY KEY (`employeeId`),
   KEY `phone_index` (`phone`),
   KEY `salary_index` (`salary`),
@@ -46,7 +49,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES ('1','Ridwan','Apa',NULL,'9871232187','O',100000,'2020-03-02 00:00:00',1,'Y'),('c54f9860-6b13-11ea-8e16-3dd56eccb0cf','Teguh','Triprasetya',NULL,'0897213123','O',100000,'2020-03-02 00:00:00',1,'Y'),('d1783c50-6b13-11ea-8e16-3dd56eccb0cf','Adella','Fitria',NULL,'0897213123','O',100000,'2020-03-02 00:00:00',1,'Y'),('d70cea80-6b13-11ea-8e16-3dd56eccb0cf','Rafly','SMM',NULL,'0897213123','O',100000,'2020-03-02 00:00:00',1,'Y'),('e98f5e30-6b0f-11ea-ad53-a7f87add0823','Ronny','Sugianto',NULL,'0897213123','O',100000,'2020-03-02 00:00:00',1,'Y');
+INSERT INTO `employee` VALUES ('1','Ridwan','Apa',NULL,NULL,'9871232187',NULL,NULL,'O',100000,'2020-03-02',1,'Active'),('c54f9860-6b13-11ea-8e16-3dd56eccb0cf','Teguh','Triprasetya',NULL,NULL,'0897213123',NULL,NULL,'O',100000,'2020-03-02',1,'Inactive'),('d1783c50-6b13-11ea-8e16-3dd56eccb0cf','Adella','Fitria',NULL,NULL,'0897213123',NULL,NULL,'O',100000,'2020-03-02',1,'Active'),('d70cea80-6b13-11ea-8e16-3dd56eccb0cf','Rafly','SMM',NULL,NULL,'0897213123',NULL,NULL,'O',100000,'2020-03-02',1,'Inactive'),('e98f5e30-6b0f-11ea-ad53-a7f87add0823','Ronny','Sugianto',NULL,NULL,'0897213123',NULL,NULL,'O',100000,'2020-03-02',1,'Active');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +62,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-27 21:18:29
+-- Dump completed on 2020-04-06 14:28:40

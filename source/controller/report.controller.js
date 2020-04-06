@@ -1,28 +1,38 @@
 
-const controlCreateReport = async (req,res,services) => {
-    const dataClient = req.body;
-    const createData = await services.createNewReport(dataClient);
-    res.send(createData);
-}
 
-const controlGetReport = async (req,res,services) => {
-    const dataQuery = req.query;
-    const dataBody = req.body;
-    let getData;
-    if(dataQuery.date === 'datenow' && dataBody.employeeId){
-        getData = await services.getReportByDateNowAndEmployeeId(dataBody)
-    }else if(dataQuery.date === 'datenow'){
-        getData = await services.getReportByDateNow();
-    }else if(dataQuery.employeeId !== null){
-        getData = await services.getReportByEmployeeId(dataQuery);
-    }else if(dataBody !== null && dataQuery === null){
-        getData = await services.getReportBySomeDate(dataBody);
-    }else{
-        getData = await services.getAllReport();
+class ReportController{
+    async controlCreateReport(req,res,services){
+        const dataClient = req.body;
+        const createData = await services.createNewReport(dataClient);
+        res.send(createData);
     }
-    res.send(getData);
+
+    async controlGetReport(req,res,services){
+        const params = req.params;
+        let getData;
+        if(!params.employeeId){
+            getData = await services.getAllReport();
+        }else {
+            getData = await services.getReportByEmployeeId(params);
+        }
+    
+        res.send(getData);
+    }
+
+    async getReport (req,res,services){
+        const params = req.params;
+        let getData;
+        if(!params.employeeId){
+            getData = await services.getReportByDateNow();
+        }else {
+            getData = await services.getReportByDateNowAndEmployeeId(params);
+        }
+        res.send(getData);
+    }
 }
 
 
 
-module.exports = {controlGetReport, controlCreateReport};
+
+
+module.exports = ReportController;

@@ -147,55 +147,21 @@ class ReportClass {
         return result;
     }
 
-    async getReportBySomeDate(report) {
-
+    async getReportByDateNowAndEmployeeId(report){
         let result;
         try {
-            result = await Report.findAll({
-                where: {
-                    [Op.or]: [
-                        {
-                            outTime: { [Op.like]: `%${moment(report.time).format('D MMM YYYY')}%` }
-                        },
-                        {
-                            inTime: { [Op.like]: `%${moment(report.time).format('D MMM YYYY')}%` },
-                        }
-                    ]
-                }
-            });
+            result = await Report.findAll({where :{
+                dateReport : moment().format('YYYY-MM-DD'),
+                employeeId : report.employeeId
+            }})
         } catch (e) {
-
+            logEvent.emit('APP_ERROR', {
+                logTitle: '[GET-REPORT-DATENOW-AND-EMPLOYEEID]',
+                logMessage : e
+            })
         }
 
         return result;
-    }
-
-
-    async getReportByDateNowAndEmployeeId(report) {
-        let result;
-        try {
-            result = await Report.findOne({
-                where: {
-                    employeeId: report.employeeId,
-
-                    [Op.or]: [
-                        {
-                            outTime: { [Op.like]: `%${moment().format('D MMM YYYY')}%` }
-                        },
-                        {
-                            inTime: { [Op.like]: `%${moment().format('D MMM YYYY')}%` },
-                        }
-                    ]
-                }
-            })
-        } catch (e) {
-            logEvent.emit('APP_ERROR', {
-                logTitle: '[GET-REPORT-BY-DATENOW-AND-EMPLOYEEID-ERROR]',
-                logMessage: e
-            });
-        }
-
-        return result
     }
 
     async getReportByDateNow() {
@@ -203,14 +169,7 @@ class ReportClass {
         try {
             result = await Report.findAll({
                 where: {
-                    [Op.or]: [
-                        {
-                            outTime: { [Op.like]: `%${moment().format('D MMM YYYY')}%` }
-                        },
-                        {
-                            inTime: { [Op.like]: `%${moment().format('D MMM YYYY')}%` },
-                        }
-                    ]
+                   dateReport : moment().format('YYYY-MM-DD')
                 }
             });
         } catch (e) {

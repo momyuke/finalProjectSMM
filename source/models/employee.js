@@ -20,6 +20,18 @@ const Employee = connection.define('employee',{
         type: Sequelize.STRING
     },
 
+    gender : {
+        type : Sequelize.ENUM('Male', 'Female')
+    },
+
+    familyName: {
+        type : Sequelize.STRING
+    },
+
+    familyNumber : {
+        type : Sequelize.STRING
+    },
+
     photos : {
         type : Sequelize.STRING
     },
@@ -28,8 +40,8 @@ const Employee = connection.define('employee',{
         type : Sequelize.STRING
     },
 
-    bloodGroup : {
-        type: Sequelize.STRING
+    bloodType : {
+        type: Sequelize.ENUM('A', 'B', 'O', 'AB')
     },
 
     salary : {
@@ -37,15 +49,15 @@ const Employee = connection.define('employee',{
     },
 
     hiredDate: {
-        type : Sequelize.DATE
+        type : Sequelize.DATEONLY
     },
 
     deptId :{
         type : Sequelize.STRING
     },
 
-    active :{
-        type : Sequelize.STRING
+    status :{
+        type : Sequelize.ENUM('Active', 'Inactive')
     }
 }, { 
     freezeTableName : true,

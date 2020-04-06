@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const ServiceEmployee = require('../services/employee.services');
-const {controlGetEmployee, controlCreateEmployee, controlUpdateEmployee} = require('../controller/employee.controller');
+const EmployeeServices = require('../services/employee.services');
+const EmployeeController = require('../controller/employee.controller');
 
-const Services = new ServiceEmployee();
+const Services = new EmployeeServices();
+const Controller = new EmployeeController();
 
-router.get('/', (req,res) => controlGetEmployee(req,res,Services));
-router.put('/', (req,res) => controlUpdateEmployee(req,res,Services));
-router.post('/', (req,res) => controlCreateEmployee(req,res,Services));
+router.get('/', (req,res) => Controller.controlGetEmployee(req,res,Services));
+router.put('/', (req,res) => Controller.controlUpdateEmployee(req,res,Services));
+router.post('/', (req,res) => Controller.controlCreateEmployee(req,res,Services));
 
 module.exports = router;

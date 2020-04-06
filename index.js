@@ -2,8 +2,6 @@ const dotenv = require('dotenv');
 const connection = require('./dbConn');
 const server = require('./server');
 const logEvent = require('./source/event/myEmitter');
-// const WebSocketServer = require('websocket').server;
-// const serviceWebSocket = require('./websocket');
 const io = require('socket.io')(server);
 
 dotenv.config();
@@ -25,9 +23,6 @@ if(process.env.APP_NAME){
                console.log('user disconnect');
            })
         });
-
-        // const wsServer = new WebSocketServer({httpServer : server});
-        // serviceWebSocket(wsServer);
         
     }).catch((err) => {
         logEvent.emit('APP_ERROR', {

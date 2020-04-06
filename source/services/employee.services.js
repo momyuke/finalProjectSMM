@@ -2,15 +2,16 @@ const Employee = require('../models/employee');
 const logEvent = require('../event/myEmitter');
 const {Op} = require('sequelize');
 const Department = require('../models/department');
-
+const StatusEmployee = { "ACTIVE" : "Active", "INACTIVE" : "Inactive"}
 
 class EmployeeService{
     async getEmployee(){
         let result;
         try{
-            result = await Employee.findAll(
-                {include : Department},
-                {where : {active : 'Y'}}
+            result = await Employee.findAll({
+                where : {status : StatusEmployee.ACTIVE},
+                include : Department
+            }
             );
         }catch(e){
             logEvent.emit('APP_ERROR',{
@@ -25,7 +26,7 @@ class EmployeeService{
     async createEmployee(employee){
         let result;
         try {
-            employee.active = 'Y';
+            employee.status = StatusEmployee.ACTIVE;
             result = await Employee.create(employee);
         } catch (e) {
             logEvent.emit('APP_ERROR',{
@@ -64,15 +65,15 @@ class EmployeeService{
         let result;
         try{
 
-            if(employee.firstName){
-                result = await Employee.findOne({where: {
+            if (employee.firstName){
+                result = await Employee.findOne({where :{
                     firstName : {[Op.like] : `%${employee.firstName}%`},
-                    active : 'Y'
+                    status : StatusEmployee.ACTIVE
                 }});
-            }else if (employee.lastName){
+            }else if(employee.lastName){
                 result = await Employee.findOne({where :{
                     lastName : {[Op.like] : `%${employee.lastName}%`},
-                    active : 'Y'
+                    status : StatusEmployee.INACTIVE
                 }});
             }
 
