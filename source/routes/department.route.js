@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const DepartmentServices = require('../services/department.services');
-const {controlCreateDepartment, controlGetDepartment, controlUpdateDepartment} = require('../controller/department.controller');
+const DepartmentController = require('../controller/department.controller');
 
+const Controller = new DepartmentController();
 const Services = new DepartmentServices();
 
-router.get('/', (req,res) => controlGetDepartment(req,res,Services));
-router.put('/', (req,res) => controlUpdateDepartment(req,res,Services));
-router.post('/', (req,res) => controlCreateDepartment(req,res,Services));
+router.get('/', (req,res) => Controller.controlGetDepartment(req,res,Services));
+router.put('/', (req,res) => Controller.controlUpdateDepartment(req,res,Services));
+router.post('/', (req,res) => Controller.controlCreateDepartment(req,res,Services));
 
 
 module.exports = router;

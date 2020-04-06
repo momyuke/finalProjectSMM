@@ -3,11 +3,24 @@ const logEvent = require('../event/myEmitter');
 
 class UserServices {
 
-    async getUser(user){
+    async getAllUser(){
+        let result;
+        try {
+            result = await User.findAll();
+        } catch (e) {
+            logEvent.emit('APP_ERROR',{
+                logTitle : '[GET-ALL-USER-ERROR]',
+                logMessage : e
+            });
+        }
+        return result;
+    }
+
+    async getUserByEmail(user){
       let result;
       try {
          result = await User.findOne({where : {
-             email : user.email, password : user.password
+             email : user.email
          }});
       } catch (e) {
           logEvent.emit('APP_ERROR',{

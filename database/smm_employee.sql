@@ -32,13 +32,11 @@ CREATE TABLE `employee` (
   `familyName` varchar(45) DEFAULT NULL,
   `familyNumber` varchar(15) DEFAULT NULL,
   `bloodType` enum('A','B','O','AB') DEFAULT NULL,
-  `salary` int NOT NULL,
   `hiredDate` date DEFAULT NULL,
   `deptId` int NOT NULL,
   `status` enum('Active','Inactive') DEFAULT NULL,
   PRIMARY KEY (`employeeId`),
   KEY `phone_index` (`phone`),
-  KEY `salary_index` (`salary`),
   KEY `deptId_index` (`deptId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -49,7 +47,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES ('1','Ridwan','Apa',NULL,NULL,'9871232187',NULL,NULL,'O',100000,'2020-03-02',1,'Active'),('c54f9860-6b13-11ea-8e16-3dd56eccb0cf','Teguh','Triprasetya',NULL,NULL,'0897213123',NULL,NULL,'O',100000,'2020-03-02',1,'Inactive'),('d1783c50-6b13-11ea-8e16-3dd56eccb0cf','Adella','Fitria',NULL,NULL,'0897213123',NULL,NULL,'O',100000,'2020-03-02',1,'Active'),('d70cea80-6b13-11ea-8e16-3dd56eccb0cf','Rafly','SMM',NULL,NULL,'0897213123',NULL,NULL,'O',100000,'2020-03-02',1,'Inactive'),('e98f5e30-6b0f-11ea-ad53-a7f87add0823','Ronny','Sugianto',NULL,NULL,'0897213123',NULL,NULL,'O',100000,'2020-03-02',1,'Active');
+INSERT INTO `employee` VALUES ('1','Ridwan','Apa',NULL,NULL,'9871232187',NULL,NULL,'O','2020-03-02',1,'Active'),('c54f9860-6b13-11ea-8e16-3dd56eccb0cf','Teguh','Triprasetya',NULL,NULL,'0897213123',NULL,NULL,'O','2020-03-02',1,'Inactive'),('d1783c50-6b13-11ea-8e16-3dd56eccb0cf','Adella','Fitria',NULL,NULL,'0897213123',NULL,NULL,'O','2020-03-02',1,'Active'),('d70cea80-6b13-11ea-8e16-3dd56eccb0cf','Rafly','SMM',NULL,NULL,'0897213123',NULL,NULL,'O','2020-03-02',1,'Inactive'),('e98f5e30-6b0f-11ea-ad53-a7f87add0823','Ronny','Sugianto',NULL,NULL,'0897213123',NULL,NULL,'O','2020-03-02',1,'Active');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -62,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-06 14:28:40
+-- Dump completed on 2020-04-06 18:09:18

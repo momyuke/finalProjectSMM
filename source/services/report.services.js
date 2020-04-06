@@ -21,10 +21,12 @@ class ReportClass {
         let result;
         let checkDataReport;
         try {
-            const checkDataEmployee = await Employee.findOne({where : {
-                employeeId: report.employeeId,
-                status : 'Active'
-            }});
+            const checkDataEmployee = await Employee.findOne({
+                where: {
+                    employeeId: report.employeeId,
+                    status: 'Active'
+                }
+            });
             if (checkDataEmployee !== null) {
 
                 const timeReport = moment(report.time).format('HH:mm:ss');
@@ -123,7 +125,8 @@ class ReportClass {
         try {
             result = await Report.findAll({
                 where:
-                    { employeeId: report.employeeId, }
+                    { employeeId: report.employeeId, },
+                include: Employee
             });
 
         } catch (e) {
@@ -150,20 +153,35 @@ class ReportClass {
         return result;
     }
 
-    async getReportByDateNowAndEmployeeId(report){
+    async getReportBySomeDate(report) {
         let result;
         try {
-            result = await Report.findAll({where :{
-                dateReport : moment().format('YYYY-MM-DD'),
-                employeeId : report.employeeId
-            }})
+            result = await Report.findAll({ where: { dateReport: report.dateReport } });
+        } catch (e) {
+            logEvent.emit('APP_ERROR', {
+                logTitle: '[GET-ALL-HISTORY-BY-SOME-DATE-ERROR]',
+                logMessage: e
+            });
+        }
+
+        return result
+    }
+
+    async getReportByDateNowAndEmployeeId(report) {
+        let result;
+        try {
+            result = await Report.findAll({
+                where: {
+                    dateReport: moment().format('YYYY-MM-DD'),
+                    employeeId: report.employeeId
+                },
+            })
         } catch (e) {
             logEvent.emit('APP_ERROR', {
                 logTitle: '[GET-REPORT-DATENOW-AND-EMPLOYEEID]',
-                logMessage : e
+                logMessage: e
             })
         }
-
         return result;
     }
 
@@ -172,8 +190,9 @@ class ReportClass {
         try {
             result = await Report.findAll({
                 where: {
-                   dateReport : moment().format('YYYY-MM-DD')
-                }
+                    dateReport: moment().format('YYYY-MM-DD')
+                },
+                
             });
         } catch (e) {
             logEvent.emit('APP_ERROR', {

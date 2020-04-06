@@ -44,10 +44,6 @@ const Employee = connection.define('employee',{
         type: Sequelize.ENUM('A', 'B', 'O', 'AB')
     },
 
-    salary : {
-        type : Sequelize.INTEGER
-    },
-
     hiredDate: {
         type : Sequelize.DATEONLY
     },
