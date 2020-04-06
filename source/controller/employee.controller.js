@@ -6,8 +6,11 @@ class EmployeeController{
             if(req.query.firstName || req.query.lastName){
                 const employeeByName = await services.getEmployeeByName(req.query);
                 res.send(employeeByName)
-              }else{
-                  const employee = await services.getEmployee();
+            }else if(req.params.employeeId){
+                const employeeById = await services.getEmployeeById(req.params);          
+                res.send(employeeById);    
+            }else{
+                  const employee = await services.getAllEmployee();
                   res.send(employee);
             }
         } catch (e) {
