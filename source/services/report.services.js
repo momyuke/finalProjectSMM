@@ -21,7 +21,10 @@ class ReportClass {
         let result;
         let checkDataReport;
         try {
-            const checkDataEmployee = await Employee.findByPk(report.employeeId);
+            const checkDataEmployee = await Employee.findOne({where : {
+                employeeId: report.employeeId,
+                status : 'Active'
+            }});
             if (checkDataEmployee !== null) {
 
                 const timeReport = moment(report.time).format('HH:mm:ss');
@@ -55,7 +58,7 @@ class ReportClass {
                                 result = await Report.create({
                                     inTime: timeReport,
                                     dateReport: dateInReport,
-                                    employeeId: employeeId
+                                    employeeId: report.employeeId
                                 });
                             }
                             break;
@@ -101,7 +104,7 @@ class ReportClass {
                 }
 
             } else {
-                return { message: 'Employee is not valid' }
+                return { message: 'Employee is not valid or the status is inactive. Please contact your human resource to activate your data' }
             }
 
         } catch (e) {
