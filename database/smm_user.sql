@@ -24,6 +24,7 @@ DROP TABLE IF EXISTS `user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `userId` varchar(36) NOT NULL,
+  `displayName` varchar(45) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
   `dateofbirth` date DEFAULT NULL,
@@ -42,7 +43,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('1asw','triprasetyat@gmail.com','teguh11','2002-01-25','jakarta','jl.perjuangan no 696969 koja jakarta utara','02197915869',NULL,'O');
+INSERT INTO `user` VALUES ('1asw','Teguh Triprasetya','triprasetyat@gmail.com','teguh11','2002-01-25','jakarta','jl.perjuangan no 696969 koja jakarta utara','02197915869',NULL,'O');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-06 14:28:41
+-- Dump completed on 2020-04-06 19:45:11

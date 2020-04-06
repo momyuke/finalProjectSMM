@@ -8,6 +8,10 @@ const User = connection.define('user', {
         primaryKey : true,
         allowNull : false
     },
+
+    displayName: {
+        type : Sequelize.STRING
+    },
     
     email : {
         type : Sequelize.STRING

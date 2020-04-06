@@ -1,5 +1,4 @@
 const Report = require('../models/report');
-const date = new Date();
 const logEvent = require('../event/myEmitter');
 const Employee = require('../models/employee');
 const { Op } = require('sequelize');

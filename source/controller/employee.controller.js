@@ -14,8 +14,6 @@ class EmployeeController{
             res.status(500);
             res.json({message : e})
         }
-
-        
     }
 
     async controlUpdateEmployee(req,res,services){
