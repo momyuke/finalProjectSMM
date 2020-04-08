@@ -32,7 +32,7 @@ class EmployeeController{
 
     async controlCreateEmployee (req,res,services){
         try {
-            const result = await services.createEmployee(req.body);
+            const result = await services.createEmployee(req.body, req.file);
             res.send(result);    
         } catch (e) {
             res.status(500);

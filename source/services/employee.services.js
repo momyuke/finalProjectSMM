@@ -2,7 +2,10 @@ const Employee = require('../models/employee');
 const logEvent = require('../event/myEmitter');
 const { Op } = require('sequelize');
 const Department = require('../models/department');
+const LogSync = require('../models/logSync');
+const StatusLog =  {'UPDATE' : 'UPDATE', 'INSERT' : 'INSERT'};
 const StatusEmployee = { "ACTIVE": "Active", "INACTIVE": "Inactive" }
+
 
 class EmployeeService {
     async getEmployeeById(employee) {
@@ -37,11 +40,26 @@ class EmployeeService {
         return result;
     }
 
-    async createEmployee(employee) {
+    //  report/datenow    
+    async createEmployee(employee, reqFile) {
         let result;
         try {
             employee.status = StatusEmployee.ACTIVE;
-            result = await Employee.create(employee);
+            if(!reqFile){
+                result = await Employee.create(employee); 
+                
+                await LogSync.create({
+                    employeeId : result.employeeId,
+                    status : StatusLog.INSERT
+                });
+            }else {
+                employee.photoUrl = reqFile.path;
+                result = await Employee.create(employee);
+                await LogSync.create({
+                    employeeId : result.employeeId,
+                    status : StatusLog.INSERT
+                });
+            }
         } catch (e) {
             logEvent.emit('APP_ERROR', {
                 logTitle: '[CREATE-EMPLOYEE-ERROR]',
@@ -66,6 +84,10 @@ class EmployeeService {
                     where: {
                         employeeId: employee.employeeId
                     }
+                });
+                await LogSync.create({
+                    employeeId : result.employeeId,
+                    status : StatusLog.UPDATE
                 });
             }
 

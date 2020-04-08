@@ -26,7 +26,8 @@ class UserController{
 
     async controlCreateUser(req,res,services){
         try {
-            const result = await services.createUser(req.body);
+            console.log(req.file);
+            const result = await services.createUser(req.body, req.file);
             res.send(result);
         } catch (e) {
             res.status(500);

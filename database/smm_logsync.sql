@@ -16,30 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `report`
+-- Table structure for table `logsync`
 --
 
-DROP TABLE IF EXISTS `report`;
+DROP TABLE IF EXISTS `logsync`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `report` (
-  `reportId` varchar(36) NOT NULL,
-  `dateReport` date DEFAULT NULL,
-  `inTime` varchar(8) DEFAULT NULL,
-  `outTime` varchar(8) DEFAULT NULL,
+CREATE TABLE `logsync` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `employeeId` varchar(36) DEFAULT NULL,
-  PRIMARY KEY (`reportId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `userId` varchar(36) DEFAULT NULL,
+  `status` enum('UPDATE','INSERT') DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `report`
+-- Dumping data for table `logsync`
 --
 
-LOCK TABLES `report` WRITE;
-/*!40000 ALTER TABLE `report` DISABLE KEYS */;
-INSERT INTO `report` VALUES ('0a544e00-7916-11ea-b43d-35d77803cff4','2020-04-06',NULL,'20:35:53','d1783c50-6b13-11ea-8e16-3dd56eccb0cf'),('0a660140-7916-11ea-b43d-35d77803cff4','2020-04-06',NULL,'20:35:53','1');
-/*!40000 ALTER TABLE `report` ENABLE KEYS */;
+LOCK TABLES `logsync` WRITE;
+/*!40000 ALTER TABLE `logsync` DISABLE KEYS */;
+/*!40000 ALTER TABLE `logsync` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

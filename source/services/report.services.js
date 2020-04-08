@@ -15,8 +15,7 @@ class ReportClass {
         }
         
     */
-
-    async createNewReport(report) {
+    async createOneReport(report) {
         let result;
         let checkDataReport;
         try {
@@ -118,6 +117,110 @@ class ReportClass {
         return result;
     }
 
+    async createListReport(report) {
+        let resultList = [];
+        var result;
+        let checkDataReport;
+        try {
+            for (let i = 0; i < report.length; i++) {
+                const checkDataEmployee = await Employee.findOne({
+                    where: {
+                        employeeId: report[i].employeeId,
+                        status: 'Active'
+                    }
+                });
+                if (!checkDataEmployee) {
+                    result = { message: 'Employee is not valid' };
+                } else {
+                    const timeReport = moment(report[i].time).format('HH:mm:ss');
+                    const dateInReport = moment(report[i].time, 'YYYY-MM-DD').toDate();
+
+                    checkDataReport = await Report.findOne({
+                        where: {
+                            outTime: { [Op.not]: null },
+                            inTime: { [Op.not]: null },
+                            dateReport: dateInReport,
+                            employeeId: report[i].employeeId
+                        }
+                    });
+
+                    if (checkDataReport) {
+                        result = { message: 'You have been attend and out today' }
+                    } else {
+                        switch (report[i].status) {
+                            case 'IN':
+                                checkDataReport = await Report.findOne({
+                                    where: {
+                                        inTime: { [Op.not]: null },
+                                        dateReport: dateInReport,
+                                        employeeId: report[i].employeeId
+                                    }
+                                });
+
+                                if (checkDataReport) {
+                                    result = { message: 'You have been attend today' }
+                                } else {
+                                    result = await Report.create({
+                                        inTime: timeReport,
+                                        dateReport: dateInReport,
+                                        employeeId: report[i].employeeId
+                                    });
+                                }
+                                break;
+
+                            case 'OUT':
+                                checkDataReport = await Report.findOne({
+                                    where: {
+                                        inTime: { [Op.not]: null },
+                                        outTime: null,
+                                        dateReport: dateInReport,
+                                        employeeId: report[i].employeeId
+                                    }
+                                });
+
+                                if (checkDataReport) {
+                                    result = checkDataReport;
+                                    result.outTime = timeReport;
+                                    result.save();
+                                } else {
+                                    checkDataReport = await Report.findOne({
+                                        where: {
+                                            outTime: { [Op.not]: null },
+                                            dateReport: dateInReport,
+                                            employeeId: report[i].employeeId
+                                        }
+                                    })
+
+                                    if (checkDataReport) {
+                                        result = { message: 'you have been out today' }
+                                    } else {
+                                        result = await Report.create({
+                                            outTime: timeReport,
+                                            dateReport: dateInReport,
+                                            employeeId: report[i].employeeId
+                                        });
+                                    }
+                                }
+                                break;
+
+                            default:
+                                result = { message: `Status ${report[i].status} is not valid` }
+                        }
+                    }
+                }
+
+                resultList.push(result);
+            }
+
+        } catch (e) {
+            logEvent.emit('APP_ERROR', {
+                logTitle: '[CREATE-LIST-REPORT]',
+                logMessage: e
+            });
+        }
+        return resultList;
+    }
+
 
     async getReportByEmployeeId(report) {
         let result;
@@ -191,7 +294,7 @@ class ReportClass {
                 where: {
                     dateReport: moment().format('YYYY-MM-DD')
                 },
-                
+
             });
         } catch (e) {
             logEvent.emit('APP_ERROR', {

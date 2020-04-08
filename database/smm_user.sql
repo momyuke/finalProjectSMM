@@ -26,7 +26,7 @@ CREATE TABLE `user` (
   `userId` varchar(36) NOT NULL,
   `displayName` varchar(45) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
-  `password` varchar(50) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `dateofbirth` date DEFAULT NULL,
   `placeofbirth` varchar(30) DEFAULT NULL,
   `address` text,
@@ -43,7 +43,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('1asw','Teguh Triprasetya','triprasetyat@gmail.com','teguh11','2002-01-25','jakarta','jl.perjuangan no 696969 koja jakarta utara','02197915869',NULL,'O');
+INSERT INTO `user` VALUES ('1asw','Teguh Triprasetya','triprasetyat@gmail.com','teguh11','2002-01-25','jakarta','jl.perjuangan no 696969 koja jakarta utara','02197915869',NULL,'O'),('9fe7cb20-79ae-11ea-a07a-5b24843f8abc','Ridwan Maelfa','ridwan@apps.com','$2b$08$SIDUiRWhBB7ae4fW44zZlOldjkQYruxkeZtLvRwBi.OlT4TDoglQm','1995-04-05','Jakarta','Jl. nangka dan duren','02114045','images\\user\\user54.jpeg','O');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-06 19:45:11
+-- Dump completed on 2020-04-08 23:07:30

@@ -5,7 +5,9 @@ const routeEmployee = require('../routes/employee.route');
 const routeReport = require('./report.route');
 const routeUser = require('./user.route');
 const routeDepartment = require('./department.route');
+const logSync = require('./logSync.route');
 
+router.use('/logsync', logSync);
 router.use('/employee', routeEmployee);
 router.use('/report', routeReport);
 router.use('/user', routeUser);

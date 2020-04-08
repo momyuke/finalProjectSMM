@@ -1,5 +1,9 @@
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
 const logEvent = require('../event/myEmitter');
+const LogSync = require('../models/logSync');
+
+const status = {'INSERT': 'INSERT', 'UPDATE' : 'UPDATE'};
 
 class UserServices {
 
@@ -31,18 +35,31 @@ class UserServices {
       return result;   
     }
 
-    async createUser(user){
+    async createUser(user, reqFile){
         let result;
-
         try{
             const checkData = await User.findOne({
                 where : {email : user.email}
             });
-
             if(checkData){
                 result = {message : 'Email that input have been registered. Please login with your email'}
             }else {
-                result = await User.create(user);
+                user.password = bcrypt.hashSync(user.password, 8);
+                if(!reqFile){
+                    result = await User.create(user);
+                    await LogSync.create({
+                        userId : result.userId,
+                        status : status.INSERT
+                    });
+                }else {
+                    user.photoUrl = reqFile.path;
+                    result = await User.create(user);
+                    console.log(result.userId);
+                    await LogSync.create({
+                        userId : result.userId,
+                        status : status.INSERT
+                    });
+                }
             }
         }catch(e){
             logEvent.emit('APP_ERROR',{
@@ -65,7 +82,12 @@ class UserServices {
             if(updateData){
                 result = await User.findOne({where: {
                     email : user.email
-                }})
+                }});
+
+                await LogSync.create({
+                    userId : result.userId,
+                    status : status.UPDATE
+                });
             }
         } catch (e) {
             logEvent.emit('APP_ERROR', {

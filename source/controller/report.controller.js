@@ -3,8 +3,16 @@
 class ReportController{
     async controlCreateReport(req,res,services){
        try {
-            const dataClient = req.body;
-            const createData = await services.createNewReport(dataClient);
+           let createData;
+            // let listTime = [];
+            if(req.body.dataReport){
+                 createData = await services.createListReport(req.body.dataReport);
+            }else {
+                createData = await services.createOneReport(req.body);
+            }
+            // dataClient.dataReport.forEach((data) => {
+            //     listTime.push(data.time);
+            // });
             res.send(createData);
        } catch (e) {
             res.status(500);
