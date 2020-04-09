@@ -6,7 +6,7 @@ class EmployeeController{
             if(req.query.firstName || req.query.lastName){
                 const employeeByName = await services.getEmployeeByName(req.query);
                 res.send(employeeByName)
-            }else if(req.params.employeeId){
+            }else if(req.params.id){
                 const employeeById = await services.getEmployeeById(req.params);          
                 res.send(employeeById);    
             }else{
