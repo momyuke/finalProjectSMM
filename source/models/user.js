@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const connection = require('../../dbConn');
 
 const User = connection.define('user', {
-    userId : {
+    id : {
         type : Sequelize.UUID,
         defaultValue : Sequelize.UUIDV1,
         primaryKey : true,

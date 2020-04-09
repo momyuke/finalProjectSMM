@@ -1,9 +1,9 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const logEvent = require('../event/myEmitter');
-const LogSync = require('../models/logSync');
+const LogSync = require('./sub-services');
 
-const status = {'INSERT': 'INSERT', 'UPDATE' : 'UPDATE'};
+const StatusLog = {'INSERT': 'INSERT', 'UPDATE' : 'UPDATE'};
 
 class UserServices {
 
@@ -41,24 +41,19 @@ class UserServices {
             const checkData = await User.findOne({
                 where : {email : user.email}
             });
+
+            console.log(checkData);
             if(checkData){
                 result = {message : 'Email that input have been registered. Please login with your email'}
             }else {
                 user.password = bcrypt.hashSync(user.password, 8);
                 if(!reqFile){
                     result = await User.create(user);
-                    await LogSync.create({
-                        userId : result.userId,
-                        status : status.INSERT
-                    });
+                    logSync(result.id, 'user', StatusLog.INSERT);
                 }else {
                     user.photoUrl = reqFile.path;
                     result = await User.create(user);
-                    console.log(result.userId);
-                    await LogSync.create({
-                        userId : result.userId,
-                        status : status.INSERT
-                    });
+                    logSync(result.id, 'user', StatusLog.INSERT);
                 }
             }
         }catch(e){
@@ -73,21 +68,15 @@ class UserServices {
 
     async updateUser(user){
         let result;
-
         try {
             const updateData = await User.update(user, {where: {
                 email : user.email
             }});
-
             if(updateData){
                 result = await User.findOne({where: {
                     email : user.email
                 }});
-
-                await LogSync.create({
-                    userId : result.userId,
-                    status : status.UPDATE
-                });
+                logSync(result.id, 'user', StatusLog, StatusLog.UPDATE);
             }
         } catch (e) {
             logEvent.emit('APP_ERROR', {

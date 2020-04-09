@@ -38,11 +38,11 @@ class DepartmentServices{
 
         try{
            const updateData = await Department.update(department, {where : {
-                departmentId : department.departmentId
+                id : department.id
            }})
             if(updateData){
                 result = await Department.findOne({where : {
-                    departmentId : department.departmentId
+                    id : department.id
                 }});
             }
         }catch(e){

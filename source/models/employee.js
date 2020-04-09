@@ -2,14 +2,14 @@ const Sequelize = require('sequelize');
 const connection = require('../../dbConn');
 
 const Employee = connection.define('employee',{
-    employeeId : {
+    id : {
         type: Sequelize.UUID,
         defaultValue : Sequelize.UUIDV1,
         primaryKey : true,
         allowNull : false
     },
 
-    deptId :{
+    departmentId :{
         type : Sequelize.INTEGER
     },
 
@@ -32,7 +32,7 @@ const Employee = connection.define('employee',{
         type : Sequelize.STRING
     },
 
-    photos : {
+    photoUrl : {
         type : Sequelize.STRING
     },
 
@@ -46,10 +46,6 @@ const Employee = connection.define('employee',{
 
     hiredDate: {
         type : Sequelize.DATEONLY
-    },
-
-    deptId :{
-        type : Sequelize.STRING
     },
 
     status :{

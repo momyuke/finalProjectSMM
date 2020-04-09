@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const connection = require('../../dbConn');
 
 const Department = connection.define('department', {
-    departmentId : {
+    id : {
         type : Sequelize.INTEGER,
         autoIncrement : true,
         primaryKey : true

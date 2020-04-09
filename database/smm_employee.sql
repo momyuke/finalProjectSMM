@@ -23,21 +23,21 @@ DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employee` (
-  `employeeId` varchar(36) NOT NULL,
+  `id` varchar(36) NOT NULL,
   `firstName` varchar(20) DEFAULT NULL,
   `lastName` varchar(20) NOT NULL,
   `gender` enum('Male','Female') DEFAULT NULL,
-  `photos` varchar(255) DEFAULT NULL,
+  `photoUrl` varchar(255) DEFAULT NULL,
   `phone` varchar(13) NOT NULL,
   `familyName` varchar(45) DEFAULT NULL,
   `familyNumber` varchar(15) DEFAULT NULL,
   `bloodType` enum('A','B','O','AB') DEFAULT NULL,
   `hiredDate` date DEFAULT NULL,
-  `deptId` int NOT NULL,
+  `departmentId` int NOT NULL,
   `status` enum('Active','Inactive') DEFAULT NULL,
-  PRIMARY KEY (`employeeId`),
+  PRIMARY KEY (`id`),
   KEY `phone_index` (`phone`),
-  KEY `deptId_index` (`deptId`)
+  KEY `deptId_index` (`departmentId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -60,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-08 23:07:28
+-- Dump completed on 2020-04-09 16:22:40

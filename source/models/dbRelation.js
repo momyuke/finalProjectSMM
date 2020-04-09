@@ -1,13 +1,21 @@
 const Department = require('./department');
 const Report = require('./report');
 const Employee = require('./employee');
+const User = require('./user');
+const LogSync = require('./logSync');
 
 function dbRelation(){
-    Department.hasMany(Employee, {foreignKey : 'deptId'});
-    Employee.belongsTo(Department, {foreignKey : 'deptId'});
+    Department.hasMany(Employee);
+    Employee.belongsTo(Department);
     
-    Employee.hasMany(Report, {foreignKey: 'employeeId'});
-    Report.belongsTo(Employee, {foreignKey : 'employeeId'});
+    User.hasMany(LogSync);
+    Employee.hasMany(LogSync);
+
+    LogSync.belongsTo(User);
+    LogSync.belongsTo(Employee);
+
+    Employee.hasMany(Report);
+    Report.belongsTo(Employee);
 }
 
 module.exports = dbRelation;

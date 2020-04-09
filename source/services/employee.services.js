@@ -2,8 +2,8 @@ const Employee = require('../models/employee');
 const logEvent = require('../event/myEmitter');
 const { Op } = require('sequelize');
 const Department = require('../models/department');
-const LogSync = require('../models/logSync');
-const StatusLog =  {'UPDATE' : 'UPDATE', 'INSERT' : 'INSERT'};
+const logSync = require('./sub-services');
+const StatusLog = { 'UPDATE': 'UPDATE', 'INSERT': 'INSERT' };
 const StatusEmployee = { "ACTIVE": "Active", "INACTIVE": "Inactive" }
 
 
@@ -11,7 +11,7 @@ class EmployeeService {
     async getEmployeeById(employee) {
         let result;
         try {
-            result = await Employee.findOne({ where: { employeeId: employee.employeeId, status: StatusEmployee.ACTIVE } });
+            result = await Employee.findOne({ where: { id: employee.id, status: StatusEmployee.ACTIVE }, include : Department });
         } catch (e) {
             logEvent.emit('APP_ERROR', {
                 logTitle: '[GET-EMPLOYEE-BY-ID-ERROR]',
@@ -45,20 +45,13 @@ class EmployeeService {
         let result;
         try {
             employee.status = StatusEmployee.ACTIVE;
-            if(!reqFile){
-                result = await Employee.create(employee); 
-                
-                await LogSync.create({
-                    employeeId : result.employeeId,
-                    status : StatusLog.INSERT
-                });
-            }else {
+            if (!reqFile) {
+                result = await Employee.create(employee);
+               await logSync(result.id, 'employee', StatusLog.INSERT);
+            } else {
                 employee.photoUrl = reqFile.path;
                 result = await Employee.create(employee);
-                await LogSync.create({
-                    employeeId : result.employeeId,
-                    status : StatusLog.INSERT
-                });
+               await logSync(result.id, 'employee', StatusLog.INSERT);
             }
         } catch (e) {
             logEvent.emit('APP_ERROR', {
@@ -75,22 +68,17 @@ class EmployeeService {
         try {
             const updateData = await Employee.update(employee, {
                 where: {
-                    employeeId: employee.employeeId
+                    id: employee.id
                 }
             });
-
             if (updateData !== null) {
                 result = await Employee.findOne({
                     where: {
-                        employeeId: employee.employeeId
+                        id: employee.id
                     }
                 });
-                await LogSync.create({
-                    employeeId : result.employeeId,
-                    status : StatusLog.UPDATE
-                });
+                await logSync(result.id, 'employee', StatusLog.UPDATE);
             }
-
         } catch (e) {
             logEvent.emit('APP_ERROR', {
                 logTitle: '[UPDATE-EMPLOYEE-ERROR]',

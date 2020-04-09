@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const connection = require('../../dbConn');
 
 const Report = connection.define('report',{
-    reportId : {
+    id : {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV1,
         allowNull: false,
