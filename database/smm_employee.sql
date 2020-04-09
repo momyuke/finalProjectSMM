@@ -38,7 +38,7 @@ CREATE TABLE `employee` (
   PRIMARY KEY (`id`),
   KEY `phone_index` (`phone`),
   KEY `deptId_index` (`departmentId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
