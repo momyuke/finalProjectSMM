@@ -244,7 +244,7 @@ class ReportClass {
     async getAllReport() {
         let result;
         try {
-            result = await Report.findAll();
+            result = await Report.findAll({include : [Employee]});
         } catch (e) {
             logEvent.emit('APP_ERROR', {
                 logTitle: '[GET-ALL-HISTORY-ERROR]',
@@ -258,7 +258,7 @@ class ReportClass {
     async getReportBySomeDate(report) {
         let result;
         try {
-            result = await Report.findAll({ where: { dateReport: report.dateReport } });
+            result = await Report.findAll({ where: { dateReport: report.dateReport }, include : [Employee] });
         } catch (e) {
             logEvent.emit('APP_ERROR', {
                 logTitle: '[GET-ALL-HISTORY-BY-SOME-DATE-ERROR]',
@@ -277,6 +277,7 @@ class ReportClass {
                     dateReport: moment().format('YYYY-MM-DD'),
                     employeeId: report.employeeId
                 },
+                Include : [Employee]
             })
         } catch (e) {
             logEvent.emit('APP_ERROR', {
@@ -294,6 +295,7 @@ class ReportClass {
                 where: {
                     dateReport: moment().format('YYYY-MM-DD')
                 },
+                include : [Employee]
 
             });
         } catch (e) {
