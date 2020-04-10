@@ -23,7 +23,7 @@ class ReportController{
     async controlGetReport(req,res,services){
         try {
             let getData;
-            if(req.params.employeeId){
+            if(req.params.id){
                 getData = await services.getReportByEmployeeId(req.params);
             }else if(req.query.dateReport){
                 getData = await services.getReportBySomeDate(req.query);
@@ -42,7 +42,7 @@ class ReportController{
         try {
             const params = req.params;
             let getData;
-            if(!params.employeeId){
+            if(!params.id){
                 getData = await services.getReportByDateNow();
             }else {
                 getData = await services.getReportByDateNowAndEmployeeId(params);
