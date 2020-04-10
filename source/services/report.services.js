@@ -21,7 +21,7 @@ class ReportClass {
         try {
             const checkDataEmployee = await Employee.findOne({
                 where: {
-                    employeeId: report.employeeId,
+                    id: report.employeeId,
                     status: 'Active'
                 }
             });
@@ -125,7 +125,7 @@ class ReportClass {
             for (let i = 0; i < report.length; i++) {
                 const checkDataEmployee = await Employee.findOne({
                     where: {
-                        employeeId: report[i].employeeId,
+                        id: report[i].employeeId,
                         status: 'Active'
                     }
                 });

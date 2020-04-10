@@ -6,7 +6,6 @@ const routes = require('./source/routes/base');
 const logEvent = require('./source/event/myEmitter');
 const loggingListener = require('./source/event/loggingListener');
 const middleware = require('./source/middleware/app-middleware');
-const io = require('socket.io');
 
 
 dotenv.config();
