@@ -7,6 +7,6 @@ const Services = new LogsyncServices();
 const LogsyncController = require('../controller/logsync.controller');
 const Controller = new LogsyncController();
 
-router.get('/', (req,res) => Controller.getLogSyncControl(req,res,Services));
+router.get('/:id', (req,res) => Controller.getLogSyncControl(req,res,Services));
 
 module.exports = router;

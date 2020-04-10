@@ -2,7 +2,7 @@
 
 class LogsyncController {
     async getLogSyncControl(req,res,services){
-        const result = await services.getLogSync();
+        const result = await services.getLogSync(req.params);
         res.send(result);
     }
 }
