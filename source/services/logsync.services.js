@@ -16,7 +16,10 @@ class LogSyncServices {
                         [
                             { model: Employee, include: [Department] },
                             User
-                        ]
+                        ],
+                    order : [
+                        ['id', 'ASC']
+                    ]
                 });
 
             if(dataLog){
