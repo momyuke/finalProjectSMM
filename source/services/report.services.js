@@ -221,6 +221,23 @@ class ReportClass {
         return resultList;
     }
 
+    async createReportSync(report){
+        let result;
+
+        try {
+            report.dataReport.forEach((data) => {
+                await Report.create(data);
+            });
+            result = 200;
+        } catch (e) {
+            logEvent.emit('APP_ERROR', {
+                logTitle: '[CREATE-LIST-REPORT]',
+                logMessage: e
+            });
+        }
+        return result;
+
+    }
 
     async getReportByEmployeeId(report) {
         let result;
