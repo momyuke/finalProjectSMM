@@ -90,7 +90,7 @@ class UserServices {
                 result = await User.findOne({where: {
                     email : user.email
                 }});
-                await logSync(result.id, 'user', StatusLog, StatusLog.UPDATE);
+                await LogSync(result.id, 'user', StatusLog, StatusLog.UPDATE);
             }
         } catch (e) {
             logEvent.emit('APP_ERROR', {
