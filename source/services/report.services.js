@@ -225,7 +225,7 @@ class ReportClass {
         let result;
 
         try {
-            report.dataReport.forEach((data) => {
+            report.forEach((data) => {
                 await Report.create(data);
             });
             result = 200;
