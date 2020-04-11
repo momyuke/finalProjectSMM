@@ -47,11 +47,11 @@ class EmployeeService {
             employee.status = StatusEmployee.ACTIVE;
             if (!reqFile) {
                 result = await Employee.create(employee);
-               await logSync(result.id, 'employee', StatusLog.INSERT);
+                await logSync(result.id, 'employee', StatusLog.INSERT);
             } else {
                 employee.photoUrl = reqFile.path;
                 result = await Employee.create(employee);
-               await logSync(result.id, 'employee', StatusLog.INSERT);
+                await logSync(result.id, 'employee', StatusLog.INSERT);
             }
         } catch (e) {
             logEvent.emit('APP_ERROR', {

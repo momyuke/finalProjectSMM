@@ -2,6 +2,7 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const logEvent = require('../event/myEmitter');
 const LogSync = require('./sub-services');
+const jwt = require('jsonwebtoken');
 
 const StatusLog = {'INSERT': 'INSERT', 'UPDATE' : 'UPDATE'};
 
@@ -23,9 +24,22 @@ class UserServices {
     async getUserByEmail(user){
       let result;
       try {
-         result = await User.findOne({where : {
+         const dataUser = await User.findOne({where : {
              email : user.email
          }});
+         
+         if(!dataUser){
+             result = null
+         }else {
+            const token = jwt.sign({id : dataUser.id}, process.env.SECRET_KEY, {
+                expiresIn : 10000
+             });
+
+             result = {
+                dataUser, 
+                token : token
+             }
+         }
       } catch (e) {
           logEvent.emit('APP_ERROR',{
               logTitle : '[GET-USER-FOR-LOGIN-ERROR]',
@@ -49,11 +63,11 @@ class UserServices {
                 user.password = bcrypt.hashSync(user.password, 8);
                 if(!reqFile){
                     result = await User.create(user);
-                    logSync(result.id, 'user', StatusLog.INSERT);
+                    await LogSync(result.id, 'user', StatusLog.INSERT);
                 }else {
                     user.photoUrl = reqFile.path;
                     result = await User.create(user);
-                    logSync(result.id, 'user', StatusLog.INSERT);
+                    await LogSync(result.id, 'user', StatusLog.INSERT);
                 }
             }
         }catch(e){
@@ -76,7 +90,7 @@ class UserServices {
                 result = await User.findOne({where: {
                     email : user.email
                 }});
-                logSync(result.id, 'user', StatusLog, StatusLog.UPDATE);
+                await logSync(result.id, 'user', StatusLog, StatusLog.UPDATE);
             }
         } catch (e) {
             logEvent.emit('APP_ERROR', {

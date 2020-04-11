@@ -228,7 +228,10 @@ class ReportClass {
             result = await Report.findAll({
                 where:
                     { employeeId: report.id, },
-                include: [Employee]
+                include: [Employee],
+                order : [
+                    ['dateReport', 'ASC']
+                ]
             });
 
         } catch (e) {
