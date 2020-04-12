@@ -1,7 +1,13 @@
 const AuthController = async (req,res,service) => {
-    const dataFromClient = req.body;
-    const Authentication = await service.authenticate(dataFromClient);
-    res.send(Authentication);
+    try {
+        const dataFromClient = req.body;
+        const Authentication = await service.authenticate(dataFromClient);
+        res.send(Authentication);
+    } catch (e) {
+        res.sendStatus(500);
+        res.json(e);
+    }
+   
 }
 
 module.exports = AuthController;

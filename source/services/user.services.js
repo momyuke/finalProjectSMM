@@ -3,20 +3,23 @@ const bcrypt = require('bcrypt');
 const logEvent = require('../event/myEmitter');
 const LogSync = require('./sub-services');
 const fs = require('fs');
+const moment = require('moment');
 
-const StatusLog = {'INSERT': 'INSERT', 'UPDATE' : 'UPDATE'};
+const StatusLog = {'INSERT': 'INSERT', 'UPDATE' : 'UPDATE', 'DELETE': 'DELETE'};
 
 class UserServices {
 
     async getAllUser(){
         let result;
         try {
-            result = await User.findAll();
+            result = await User.findAll({where : {deleteAt : null}});
         } catch (e) {
             logEvent.emit('APP_ERROR',{
                 logTitle : '[GET-ALL-USER-ERROR]',
                 logMessage : e
             });
+
+            throw new Error(e);
         }
         return result;
     }
@@ -24,20 +27,17 @@ class UserServices {
     async getUserByEmail(user){
       let result;
       try {
-         const dataUser = await User.findOne({where : {
-             email : user.email
+         result = await User.findOne({where : {
+             email : user.email,
+             deleteAt : null
          }});
-         
-         if(!dataUser){
-             result = null;
-         }else {
-            result = dataUser;
-         }
       } catch (e) {
           logEvent.emit('APP_ERROR',{
               logTitle : '[GET-USER-FOR-LOGIN-ERROR]',
               logMessage : e
           });
+          throw new Error(e);
+
       }
       return result;   
     }
@@ -49,16 +49,18 @@ class UserServices {
                 where : {email : user.email}
             });
 
-            console.log(checkData);
             if(checkData){
                 result = {message : 'Email that input have been registered. Please login with your email'}
+                if(reqFile){
+                    fs.unlinkSync(reqFile.path);
+                }
             }else {
                 user.password = bcrypt.hashSync(user.password, 8);
                 if(!reqFile){
                     result = await User.create(user);
                     await LogSync(result.id, 'user', StatusLog.INSERT);
                 }else {
-                    user.photoUrl = reqFile.path;
+                    user.photoUrl = "\\" + reqFile.path;
                     result = await User.create(user);
                     await LogSync(result.id, 'user', StatusLog.INSERT);
                 }
@@ -73,17 +75,24 @@ class UserServices {
         return result;
     }
 
-    async updateUser(user){
+    async updateUser(user, reqFile){
         let result;
         try {
-            const updateData = await User.update(user, {where: {
-                email : user.email
-            }});
+            user.password = bcrypt.hashSync(user.password, 8);
+            if(reqFile){
+                const checkData = await User.findByPk(user.id);
+                checkData.photoUrl !== null ? fs.unlinkSync(`.${checkData.photoUrl}`) : null; 
+                user.photoUrl = "\\" + reqFile.path;
+            }
+            const updateData = User.update(user, {
+                where: {
+                  id: user.id
+                }
+              });
+
             if(updateData){
-                result = await User.findOne({where: {
-                    email : user.email
-                }});
-                await LogSync(result.id, 'user', StatusLog, StatusLog.UPDATE);
+                result = {message : 'Update user is successfully'}
+                await LogSync(result.id, 'user', StatusLog.UPDATE);
             }
         } catch (e) {
             logEvent.emit('APP_ERROR', {
@@ -97,14 +106,16 @@ class UserServices {
 
     async deleteUser(user){
         try {
-            const checkUser = await User.findByPk(user.id);
-            if(!checkUser){
-                return {message : 'Data not found'};
+            const checkUser = await User.findOne({where : {id : user.id, deleteAt : null}});
+            console.log(checkUser);
+            if(checkUser === null){
+                return {message : 'Data not found'}
             }else { 
-                checkUser.destroy();
-                return 200;
+                checkUser.deleteAt = moment().toISOString();
+                checkUser.save();
+                await LogSync(checkUser.id, 'user', StatusLog.DELETE)
+                return {message  : 'Delete user is success'};
             }
-             
         } catch (e) {
             logEvent.emit('APP_ERROR', {
                 logTitle : '[DELETE-USER-ERROR]',

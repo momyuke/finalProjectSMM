@@ -10,7 +10,8 @@ const Services = new EmployeeServices();
 const Controller = new EmployeeController();
 
 router.get('/:id?', (req,res) => Controller.controlGetEmployee(req,res,Services));
-router.put('/', (req,res) => Controller.controlUpdateEmployee(req,res,Services));
+router.put('/', uploadHandler('employee').single('photoUrl'),(req,res) => Controller.controlUpdateEmployee(req,res,Services));
 router.post('/', uploadHandler('employee').single('photoUrl'),(req,res) => Controller.controlCreateEmployee(req,res,Services));
+router.delete('/', (req,res) => Controller.controlnonActivateEmployee(req,res,Services));
 
 module.exports = router;

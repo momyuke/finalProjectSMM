@@ -24,6 +24,14 @@ const Employee = connection.define('employee',{
         type : Sequelize.ENUM('Male', 'Female')
     },
 
+    dateofbirth:{
+        type: Sequelize.DATEONLY
+    },
+
+    placeofbirth:{
+        type : Sequelize.STRING
+    },
+
     familyName: {
         type : Sequelize.STRING
     },

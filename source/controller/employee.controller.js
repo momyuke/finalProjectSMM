@@ -1,4 +1,3 @@
-
 class EmployeeController{
     
     async controlGetEmployee(req,res,services){
@@ -21,7 +20,7 @@ class EmployeeController{
 
     async controlUpdateEmployee(req,res,services){
         try {
-            const result = await services.updateEmployee(req.body);
+            const result = await services.updateEmployee(req.body, req.file);
             res.send(result);
         } catch (e) {
             res.status(500);

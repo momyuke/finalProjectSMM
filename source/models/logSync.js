@@ -18,7 +18,7 @@ const LogSync = connectionDb.define('logsync', {
     },
     
     status : {
-        type : Sequelize.ENUM('INSERT, UPDATE')
+        type : Sequelize.ENUM('INSERT, UPDATE', 'DELETE')
     }
     
     

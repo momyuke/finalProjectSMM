@@ -18,7 +18,7 @@ class UserController{
 
     async controlUpdateUser(req,res,services){
         try {
-            const result = await services.updateUser(req.body);
+            const result = await services.updateUser(req.body, req.file);
             res.send(result);
         } catch (e) {
             res.status(500);
@@ -39,10 +39,11 @@ class UserController{
     async controlDeleteUser(req,res,services){
         try {
             const result = await services.deleteUser(req.body);
-            if(result){
-                
+            if(result !== null){
+                res.send(result); 
+            }else {
+                res.sendStatus(500);
             }
-            res.send(result);
         } catch (e) {
             res.status(500);
             res.json({message : e});

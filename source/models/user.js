@@ -43,6 +43,9 @@ const User = connection.define('user', {
 
     bloodGroup : {
         type : Sequelize.STRING
+    },
+    deleteAt : {
+        type : Sequelize.DATE
     }
 }, {
     freezeTableName : false,

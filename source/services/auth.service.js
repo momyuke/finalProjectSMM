@@ -12,7 +12,7 @@ class AuthLogin {
         try {
             userLogin = await User.findOne({ where: { email: user.email } });
             if (!userLogin) {
-                result = null;
+                result = {message : "Email is not valid"};
             } else {
                 const matchPassword = bcrypt.compareSync(user.password, userLogin.password);
                 if (matchPassword) {
@@ -25,7 +25,7 @@ class AuthLogin {
                         token: accessToken
                     }
                 } else {
-                    result = null;
+                    result = {message : "Password is wrong"};
                 }
             }
         } catch (err) {
@@ -33,7 +33,6 @@ class AuthLogin {
                 logTitle: 'GET-PRODUCT-SERVICE-FAILED',
                 logMessage: err
             })
-
 
             throw new Error(err);
         }

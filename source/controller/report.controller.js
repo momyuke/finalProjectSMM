@@ -1,12 +1,13 @@
 class ReportController {
     async controlCreateReportSync(req, res, services) {
         try {
-            if (req.body.dataReport) {
-                const createData = await services.createReportSync(req.body.dataReport);
-                if(createData){
+            if (req.body) {
+                const createData = await services.createReportSync(req.body);
+                if (createData !== null) {
                     res.status(200);
+                    res.json(createData);
                 }
-            }else {
+            } else {
                 res.status(400);
             }
         } catch (e) {

@@ -1,9 +1,10 @@
 const Employee = require('../models/employee');
 const logEvent = require('../event/myEmitter');
 const { Op } = require('sequelize');
+const fs = require('fs');
 const Department = require('../models/department');
 const logSync = require('./sub-services');
-const StatusLog = { 'UPDATE': 'UPDATE', 'INSERT': 'INSERT' };
+const StatusLog = { 'UPDATE': 'UPDATE', 'INSERT': 'INSERT', 'DELETE': 'DELETE' };
 const StatusEmployee = { "ACTIVE": "Active", "INACTIVE": "Inactive" }
 
 
@@ -11,7 +12,7 @@ class EmployeeService {
     async getEmployeeById(employee) {
         let result;
         try {
-            result = await Employee.findOne({ where: { id: employee.id, status: StatusEmployee.ACTIVE }, include : Department });
+            result = await Employee.findOne({ where: { id: employee.id, status: StatusEmployee.ACTIVE }, include: Department });
         } catch (e) {
             logEvent.emit('APP_ERROR', {
                 logTitle: '[GET-EMPLOYEE-BY-ID-ERROR]',
@@ -45,6 +46,19 @@ class EmployeeService {
         let result;
         try {
             employee.status = StatusEmployee.ACTIVE;
+            const checkData = await Employee.findOne({
+                where: {
+                    firstName: employee.firstName,
+                    lastName: employee.lastName,
+                    birthofdate: employee.birthofdate
+                }
+            });
+            if (checkData) {
+                if (!reqFile) {
+                    fs.unlinkSync(reqFile.path);
+                }
+                return { message: 'Employee was already created' }
+            }
             if (!reqFile) {
                 result = await Employee.create(employee);
                 await logSync(result.id, 'employee', StatusLog.INSERT);
@@ -63,20 +77,22 @@ class EmployeeService {
         return result;
     }
 
-    async updateEmployee(employee) {
+    async updateEmployee(employee, reqFile) {
         let result;
         try {
+            if (reqFile) {
+                console.log(reqFile.path);
+                const checkData = await Employee.findByPk(employee.id);
+                checkData.photoUrl !== null ? fs.unlinkSync(`.${checkData.photoUrl}`) : null;
+                employee.photoUrl = "\\" + reqFile.path;
+            }
             const updateData = await Employee.update(employee, {
                 where: {
                     id: employee.id
                 }
             });
             if (updateData !== null) {
-                result = await Employee.findOne({
-                    where: {
-                        id: employee.id
-                    }
-                });
+                result = { message: 'Update employee is success' }
                 await logSync(result.id, 'employee', StatusLog.UPDATE);
             }
         } catch (e) {
@@ -109,6 +125,28 @@ class EmployeeService {
                 });
             }
 
+        } catch (e) {
+            logEvent.emit('APP_ERROR', {
+                logTitle: '[GET-EMPLOYEE-BY-ID-ERROR]',
+                logMessage: e
+            });
+        }
+
+        return result;
+    }
+
+    async nonActivateEmployee(employee) {
+        let result;
+        try {
+            const checkData = await Employee.findOne({ where: { id: employee.id, status: StatusEmployee.ACTIVE } });
+            if (!checkData) {
+                result = { message: 'Employee is not found' }
+            } else {
+                checkData.status = StatusEmployee.INACTIVE;
+                checkData.save();
+                await logSync(checkData.id, 'employee', StatusLog.DELETE);
+                result = { message: 'Delete employee is success' }
+            }
         } catch (e) {
             logEvent.emit('APP_ERROR', {
                 logTitle: '[GET-EMPLOYEE-BY-ID-ERROR]',

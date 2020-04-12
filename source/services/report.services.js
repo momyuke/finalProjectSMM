@@ -224,10 +224,8 @@ class ReportClass {
     async createReportSync(report){
         let result;
         try {
-            report.forEach( async (data) => {
-                await Report.create(data);
-            });
-            result = 200;
+            result = await Report.bulkCreate(report);
+            console.log(result);
         } catch (e) {
             logEvent.emit('APP_ERROR', {
                 logTitle: '[CREATE-LIST-REPORT]',

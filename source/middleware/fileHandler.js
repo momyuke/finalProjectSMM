@@ -1,13 +1,13 @@
 const multer = require('multer');
+const moment = require('moment');
 
 const methodFileHandler = function (identify){
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, `./images/${identify}`);
+            cb(null, `./assets/images/${identify}`);
         },
         filename: function (req, file, cb) {
-            const fileName = identify === 'user' ? req.body.displayName  : req.body.firstName;
-            cb(null, identify + fileName + '.jpeg');
+            cb(null,  moment().toISOString().replace(/:/g, '-') + '.jpeg');
         }
     })
     
