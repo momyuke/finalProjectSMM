@@ -10,6 +10,7 @@ const Services = new UserServices();
 router.get('/', (req, res) => Controller.controlGetUser(req, res, Services));
 router.put('/', (req, res) => Controller.controlUpdateUser(req, res, Services));
 router.post('/', uploadHandler('user').single('photoUrl'), (req, res) => Controller.controlCreateUser(req, res, Services));
+router.delete('/', (req,res) => Controller.controlDeleteUser(req,res,Services));
 
 
 

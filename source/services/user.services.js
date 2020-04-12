@@ -2,7 +2,7 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const logEvent = require('../event/myEmitter');
 const LogSync = require('./sub-services');
-const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
 const StatusLog = {'INSERT': 'INSERT', 'UPDATE' : 'UPDATE'};
 
@@ -29,16 +29,9 @@ class UserServices {
          }});
          
          if(!dataUser){
-             result = null
+             result = null;
          }else {
-            const token = jwt.sign({id : dataUser.id}, process.env.SECRET_KEY, {
-                expiresIn : 10000
-             });
-
-             result = {
-                dataUser, 
-                token : token
-             }
+            result = dataUser;
          }
       } catch (e) {
           logEvent.emit('APP_ERROR',{
@@ -100,6 +93,24 @@ class UserServices {
         }
 
         return result;
+    }
+
+    async deleteUser(user){
+        try {
+            const checkUser = await User.findByPk(user.id);
+            if(!checkUser){
+                return {message : 'Data not found'};
+            }else { 
+                checkUser.destroy();
+                return 200;
+            }
+             
+        } catch (e) {
+            logEvent.emit('APP_ERROR', {
+                logTitle : '[DELETE-USER-ERROR]',
+                logMessage : e
+            });
+        }
     }
 
 

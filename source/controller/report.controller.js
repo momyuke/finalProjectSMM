@@ -4,10 +4,10 @@ class ReportController {
             if (req.body.dataReport) {
                 const createData = await services.createReportSync(req.body.dataReport);
                 if(createData){
-                    res.statusCode(200);
+                    res.status(200);
                 }
             }else {
-                res.statusCode(400);
+                res.status(400);
             }
         } catch (e) {
             res.status(500);

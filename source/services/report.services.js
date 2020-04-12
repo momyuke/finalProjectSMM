@@ -223,9 +223,8 @@ class ReportClass {
 
     async createReportSync(report){
         let result;
-
         try {
-            report.forEach((data) => {
+            report.forEach( async (data) => {
                 await Report.create(data);
             });
             result = 200;

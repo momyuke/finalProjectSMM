@@ -6,7 +6,8 @@ const methodFileHandler = function (identify){
             cb(null, `./images/${identify}`);
         },
         filename: function (req, file, cb) {
-            cb(null, identify + (Math.floor(Math.random() * 100) + 1) + '.jpeg');
+            const fileName = identify === 'user' ? req.body.displayName  : req.body.firstName;
+            cb(null, identify + fileName + '.jpeg');
         }
     })
     
