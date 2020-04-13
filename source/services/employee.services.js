@@ -54,7 +54,7 @@ class EmployeeService {
                 }
             });
             if (checkData) {
-                if (!reqFile) {
+                if (reqFile) {
                     fs.unlinkSync(reqFile.path);
                 }
                 return { message: 'Employee was already created' }
@@ -63,7 +63,7 @@ class EmployeeService {
                 result = await Employee.create(employee);
                 await logSync(result.id, 'employee', StatusLog.INSERT);
             } else {
-                employee.photoUrl = reqFile.path;
+                employee.photoUrl = '\\' + reqFile.path;
                 result = await Employee.create(employee);
                 await logSync(result.id, 'employee', StatusLog.INSERT);
             }
@@ -82,9 +82,11 @@ class EmployeeService {
         try {
             if (reqFile) {
                 console.log(reqFile.path);
+                console.log(employee);
                 const checkData = await Employee.findByPk(employee.id);
-                checkData.photoUrl !== null ? fs.unlinkSync(`.${checkData.photoUrl}`) : null;
-                employee.photoUrl = "\\" + reqFile.path;
+                if(checkData === null){null}else {checkData.photoUrl === null ? null : fs.unlinkSync(`.${checkData.photoUrl}`)}
+                // employee.photoUrl = '\\' + reqFile.path;
+                console.log(employee.photoUrl);
             }
             const updateData = await Employee.update(employee, {
                 where: {

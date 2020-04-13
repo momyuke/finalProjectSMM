@@ -7,7 +7,7 @@ const methodFileHandler = function (identify){
             cb(null, `./assets/images/${identify}`);
         },
         filename: function (req, file, cb) {
-            cb(null,  moment().toISOString().replace(/:/g, '-') + '.jpeg');
+            cb(null,  moment().format('YYYY-MM-DD_HH-mm-ss') + '.jpeg');
         }
     })
     
