@@ -50,7 +50,7 @@ class EmployeeService {
                 where: {
                     firstName: employee.firstName,
                     lastName: employee.lastName,
-                    birthofdate: employee.birthofdate
+                    dateofbirth: employee.dateofbirth
                 }
             });
             if (checkData) {
