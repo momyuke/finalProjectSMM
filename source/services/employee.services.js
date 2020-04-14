@@ -66,7 +66,7 @@ class EmployeeService {
                 await logSync(result.id, 'employee', StatusLog.INSERT);
             } else {
                 console.log(reqFile.path);
-                employee.photoUrl = process.env.PATH_OS + reqFile.path.slice(reqFile.path.indexOf('images'));
+                employee.photoUrl = process.env.PATH_OS + reqFile.path.slice(reqFile.path.indexOf('assets'));
                 result = await Employee.create(employee);
                 await logSync(result.id, 'employee', StatusLog.INSERT);
             }
@@ -90,7 +90,7 @@ class EmployeeService {
                 console.log(employee);
                 const checkData = await Employee.findByPk(employee.id);
                 if(checkData === null){null}else {checkData.photoUrl === null ? null : fs.unlinkSync(`.${checkData.photoUrl}`)}
-                employee.photoUrl = process.env.PATH_OS + reqFile.path.slice(reqFile.path.indexOf('images'));
+                employee.photoUrl = process.env.PATH_OS + reqFile.path.slice(reqFile.path.indexOf('assets'));
                 console.log(employee.photoUrl);
             }
             const updateData = await Employee.update(employee, {
