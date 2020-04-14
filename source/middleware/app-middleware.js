@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const dbRelation = require('../models/dbRelation');
 
-router.use('/images', express.static('images'));
+router.use('/images', express.static('assets/images'));
 router.use(express.json());
 
 router.use((req, res, next) => {

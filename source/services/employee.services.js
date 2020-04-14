@@ -65,7 +65,8 @@ class EmployeeService {
                 result = await Employee.create(employee);
                 await logSync(result.id, 'employee', StatusLog.INSERT);
             } else {
-                employee.photoUrl = '\\' + reqFile.path.slice(reqFile.path.indexOf('assets'));
+                console.log(reqFile.path);
+                employee.photoUrl = process.env.PATH_OS + reqFile.path.slice(reqFile.path.indexOf('images'));
                 result = await Employee.create(employee);
                 await logSync(result.id, 'employee', StatusLog.INSERT);
             }
@@ -89,7 +90,7 @@ class EmployeeService {
                 console.log(employee);
                 const checkData = await Employee.findByPk(employee.id);
                 if(checkData === null){null}else {checkData.photoUrl === null ? null : fs.unlinkSync(`.${checkData.photoUrl}`)}
-                employee.photoUrl = '\\' + reqFile.path.slice(reqFile.path.indexOf('assets'));
+                employee.photoUrl = process.env.PATH_OS + reqFile.path.slice(reqFile.path.indexOf('images'));
                 console.log(employee.photoUrl);
             }
             const updateData = await Employee.update(employee, {
