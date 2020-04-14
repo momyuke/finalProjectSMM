@@ -82,7 +82,7 @@ class UserServices {
             if(user.password){user.password = bcrypt.hashSync(user.password, 8);}
             if(reqFile){
                 const checkData = await User.findByPk(user.id);
-                checkData.photoUrl !== null ? fs.unlinkSync(`.${checkData.photoUrl}`) : null; 
+                if(checkData === null){null}else {checkData.photoUrl === null ? null : fs.unlinkSync(`.${checkData.photoUrl}`)}
                 user.photoUrl = process.env.PATH_OS + reqFile.path.slice(reqFile.path.indexOf('assets'));
             }
             const updateData = User.update(user, {
