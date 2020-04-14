@@ -18,6 +18,7 @@ class EmployeeService {
                 logTitle: '[GET-EMPLOYEE-BY-ID-ERROR]',
                 logMessage: e
             });
+            throw new Error(e);
         }
 
         return result;
@@ -36,6 +37,7 @@ class EmployeeService {
                 logTitle: '[GET-ALL-EMPLOYEE-ERROR]',
                 logMessage: e
             });
+            throw new Error(e);
         }
 
         return result;
@@ -63,7 +65,7 @@ class EmployeeService {
                 result = await Employee.create(employee);
                 await logSync(result.id, 'employee', StatusLog.INSERT);
             } else {
-                employee.photoUrl = '\\' + reqFile.path;
+                employee.photoUrl = '\\' + reqFile.path.slice(reqFile.path.indexOf('assets'));
                 result = await Employee.create(employee);
                 await logSync(result.id, 'employee', StatusLog.INSERT);
             }
@@ -87,7 +89,7 @@ class EmployeeService {
                 console.log(employee);
                 const checkData = await Employee.findByPk(employee.id);
                 if(checkData === null){null}else {checkData.photoUrl === null ? null : fs.unlinkSync(`.${checkData.photoUrl}`)}
-                // employee.photoUrl = '\\' + reqFile.path;
+                employee.photoUrl = '\\' + reqFile.path.slice(reqFile.path.indexOf('assets'));
                 console.log(employee.photoUrl);
             }
             const updateData = await Employee.update(employee, {
@@ -104,6 +106,8 @@ class EmployeeService {
                 logTitle: '[UPDATE-EMPLOYEE-ERROR]',
                 logMessage: e
             });
+
+            throw new Error(e);
         }
 
         return result;
@@ -156,6 +160,8 @@ class EmployeeService {
                 logTitle: '[GET-EMPLOYEE-BY-ID-ERROR]',
                 logMessage: e
             });
+
+            throw new Error(e);
         }
 
         return result;

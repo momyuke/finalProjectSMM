@@ -60,7 +60,7 @@ class UserServices {
                     result = await User.create(user);
                     await LogSync(result.id, 'user', StatusLog.INSERT);
                 }else {
-                    user.photoUrl = "\\" + reqFile.path;
+                    user.photoUrl = "\\" + reqFile.path.slice(reqFile.path.indexOf('assets'));
                     result = await User.create(user);
                     await LogSync(result.id, 'user', StatusLog.INSERT);
                 }
@@ -83,7 +83,7 @@ class UserServices {
             if(reqFile){
                 const checkData = await User.findByPk(user.id);
                 checkData.photoUrl !== null ? fs.unlinkSync(`.${checkData.photoUrl}`) : null; 
-                user.photoUrl = "\\" + reqFile.path;
+                user.photoUrl = "\\" + reqFile.path.slice(reqFile.path.indexOf('assets'));
             }
             const updateData = User.update(user, {
                 where: {

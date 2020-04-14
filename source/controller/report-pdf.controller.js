@@ -32,17 +32,17 @@ async function controlReportPdf(req, res) {
             content: dataContent
         }, (err, data) => {
             if (err) {
-                throw new Error(err)
+                throw new Error(err.message)
             } else {
                 let option = {
                     "format": "A4",
                     "orientation": "potrait"
                 };
 
-                pdf.create(data, option).toFile(`${nameofFile}.pdf`,
+                pdf.create(data, option).toFile(path.join(__dirname, `../../${nameofFile}.pdf`),
                     function (err, data) {
                         if (err) {
-                            throw new Error(err);
+                            throw new Error(err.message);
                         } else {
                             res.set('Content-Type', 'application/pdf');
                             setTimeout(() => {
