@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        th {
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h3><%= title %></h3>
+    <table>
+        <thead>
+        <tr>
+            <% header.forEach(h => { %>
+                <th><%= h %></th>
+            <% }); %>
+        </tr>
+        </thead>
+        <tbody>
+        <% if (content.length > 0) { %>
+            <% content.forEach(cnt => { %>
+                <tr>
+                    <% for(var p in cnt) { %>
+                        <td><%= cnt[p] %></td>
+                    <% }; %>
+                </tr>
+            <% }); %>
+        <% } %>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

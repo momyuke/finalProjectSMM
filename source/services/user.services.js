@@ -4,8 +4,8 @@ const logEvent = require('../event/myEmitter');
 const LogSync = require('./sub-services');
 const fs = require('fs');
 const moment = require('moment');
-
 const StatusLog = {'INSERT': 'INSERT', 'UPDATE' : 'UPDATE', 'DELETE': 'DELETE'};
+
 
 class UserServices {
 
@@ -70,6 +70,7 @@ class UserServices {
                 logTitle : '[CREATE-USER-ERROR]',
                 logMessage : e
             });
+            throw new Error(e);
         }
 
         return result;
@@ -92,13 +93,14 @@ class UserServices {
 
             if(updateData){
                 result = {message : 'Update user is successfully'}
-                await LogSync(result.id, 'user', StatusLog.UPDATE);
+                await LogSync(user.id, 'user', StatusLog.UPDATE);
             }
         } catch (e) {
             logEvent.emit('APP_ERROR', {
                 logTitle : '[UPDATE-USER-ERROR]',
                 logMessage : e
             });
+            throw new Error(e);
         }
 
         return result;
@@ -121,10 +123,9 @@ class UserServices {
                 logTitle : '[DELETE-USER-ERROR]',
                 logMessage : e
             });
+            throw new Error(e);
         }
     }
-
-
 
 }
 

@@ -12,7 +12,7 @@ class AuthLogin {
         try {
             userLogin = await User.findOne({ where: { email: user.email } });
             if (!userLogin) {
-                result = {message : "Email is not valid"};
+                result = {message : "Email is not valid", status : 401};
             } else {
                 const matchPassword = bcrypt.compareSync(user.password, userLogin.password);
                 if (matchPassword) {
@@ -25,7 +25,7 @@ class AuthLogin {
                         token: accessToken
                     }
                 } else {
-                    result = {message : "Password is wrong"};
+                    result = {message : "Password is wrong", status: 403};
                 }
             }
         } catch (err) {

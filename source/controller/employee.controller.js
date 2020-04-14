@@ -14,7 +14,7 @@ class EmployeeController{
             }
         } catch (e) {
             res.status(500);
-            res.json({message : e})
+            res.json({message : e.message})
         }
     }
 

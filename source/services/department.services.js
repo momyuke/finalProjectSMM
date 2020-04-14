@@ -13,6 +13,7 @@ class DepartmentServices{
                 logTitle : '[GET-ALL-DEPARTMENT-ERROR]',
                 logMessage : e
             })
+            throw new Error(e);
         }
 
         return result;
@@ -28,6 +29,7 @@ class DepartmentServices{
                 logTitle : '[CREATE-DEPARTMENT-ERROR]',
                 logMessage : e
             })
+            throw new Error(e);
         }
 
         return result;
@@ -50,6 +52,7 @@ class DepartmentServices{
                 logTitle : '[UPDATE-DEPARTMENT-ERROR]',
                 logMessage : e
             })
+            throw new Error(e);
         }
 
         return result;

@@ -71,7 +71,9 @@ class EmployeeService {
             logEvent.emit('APP_ERROR', {
                 logTitle: '[CREATE-EMPLOYEE-ERROR]',
                 logMessage: e
-            })
+            });
+
+            throw new Error(e);
         }
 
         return result;

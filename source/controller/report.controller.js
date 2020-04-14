@@ -12,7 +12,19 @@ class ReportController {
             }
         } catch (e) {
             res.status(500);
-            res.json({ message: e });
+            res.json({ message: e.message});
+        }
+    }
+
+    async controlReportPdf(req,res,services){
+        try {
+            console.log(req.params.employeeId)
+            const result = await services.getReportPdf(req.params);
+            res.set('Content-Type', 'application/pdf');
+            res.download(result);
+        } catch (e) {
+            res.status(500);
+            res.json({ message: e.message});
         }
     }
 
@@ -31,7 +43,7 @@ class ReportController {
             res.send(createData);
         } catch (e) {
             res.status(500);
-            res.json({ message: e });
+            res.json({ message: e.message});
         }
     }
 
@@ -49,7 +61,7 @@ class ReportController {
             res.send(getData);
         } catch (e) {
             res.status(500);
-            res.json({ message: e });
+            res.json({ message: e.message});
         }
     }
 
@@ -65,7 +77,7 @@ class ReportController {
             res.send(getData);
         } catch (e) {
             res.status(500);
-            res.json({ message: e });
+            res.json({ message: e.message});
         }
     }
 }

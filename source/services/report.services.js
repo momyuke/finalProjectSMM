@@ -4,7 +4,6 @@ const Employee = require('../models/employee');
 const { Op } = require('sequelize');
 const moment = require('moment');
 
-
 class ReportClass {
     /* 
         
@@ -112,6 +111,7 @@ class ReportClass {
                 logTitle: '[CREATE-NEW-REPORT-NEW]',
                 logMessage: e
             });
+            throw new Error(e);
         }
 
         return result;
@@ -217,11 +217,12 @@ class ReportClass {
                 logTitle: '[CREATE-LIST-REPORT]',
                 logMessage: e
             });
+            throw new Error(e);
         }
         return resultList;
     }
 
-    async createReportSync(report){
+    async createReportSync(report) {
         let result;
         try {
             result = await Report.bulkCreate(report);
@@ -243,7 +244,7 @@ class ReportClass {
                 where:
                     { employeeId: report.id, },
                 include: [Employee],
-                order : [
+                order: [
                     ['dateReport', 'ASC']
                 ]
             });
@@ -253,6 +254,7 @@ class ReportClass {
                 logTitle: '[GET-HISTORY-ATTENDANCE-BY-ID-ERROR]',
                 logMessage: e
             });
+            throw new Error(e);
         }
 
         return result;
@@ -261,12 +263,13 @@ class ReportClass {
     async getAllReport() {
         let result;
         try {
-            result = await Report.findAll({include : [Employee]});
+            result = await Report.findAll({ include: [Employee] });
         } catch (e) {
             logEvent.emit('APP_ERROR', {
                 logTitle: '[GET-ALL-HISTORY-ERROR]',
                 logMessage: e
             });
+            throw new Error(e);
         }
 
         return result;
@@ -275,12 +278,13 @@ class ReportClass {
     async getReportBySomeDate(report) {
         let result;
         try {
-            result = await Report.findAll({ where: { dateReport: report.dateReport }, include : [Employee] });
+            result = await Report.findAll({ where: { dateReport: report.dateReport }, include: [Employee] });
         } catch (e) {
             logEvent.emit('APP_ERROR', {
                 logTitle: '[GET-ALL-HISTORY-BY-SOME-DATE-ERROR]',
                 logMessage: e
             });
+            throw new Error(e);
         }
 
         return result
@@ -294,13 +298,14 @@ class ReportClass {
                     dateReport: moment().format('YYYY-MM-DD'),
                     employeeId: report.employeeId
                 },
-                Include : [Employee]
+                Include: [Employee]
             })
         } catch (e) {
             logEvent.emit('APP_ERROR', {
                 logTitle: '[GET-REPORT-DATENOW-AND-EMPLOYEEID]',
                 logMessage: e
-            })
+            });
+            throw new Error(e);
         }
         return result;
     }
@@ -312,7 +317,7 @@ class ReportClass {
                 where: {
                     dateReport: moment().format('YYYY-MM-DD')
                 },
-                include : [Employee]
+                include: [Employee]
 
             });
         } catch (e) {
@@ -320,6 +325,7 @@ class ReportClass {
                 logTitle: '[GET-HISTORY-BY-IN-DATE-NOW-ERROR]',
                 logMessage: e
             });
+            throw new Error(e);
         }
 
         return result;

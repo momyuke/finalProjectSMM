@@ -12,7 +12,7 @@ class UserController{
             res.send(result);
         } catch (e) {
             res.status(500);
-            res.json({message : e});
+            res.json({message : e.message});
         }
     }
 
@@ -22,7 +22,7 @@ class UserController{
             res.send(result);
         } catch (e) {
             res.status(500);
-            res.json({message : e});
+            res.json({message : e.message});
         }
     }
 
@@ -32,7 +32,7 @@ class UserController{
             res.send(result);
         } catch (e) {
             res.status(500);
-            res.json({message : e});
+            res.json({message : e.message});
         }
     }
 
@@ -46,7 +46,7 @@ class UserController{
             }
         } catch (e) {
             res.status(500);
-            res.json({message : e});
+            res.json({message : e.message});
         }
     }
 
