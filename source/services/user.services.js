@@ -80,8 +80,8 @@ class UserServices {
         let result;
         try {
             if(user.password){user.password = bcrypt.hashSync(user.password, 8);}
+            const checkData = await User.findByPk(user.id);
             if(reqFile){
-                const checkData = await User.findByPk(user.id);
                 if(checkData === null){null}else {checkData.photoUrl === null ? null : fs.unlinkSync(`.${checkData.photoUrl}`)}
                 user.photoUrl = process.env.PATH_OS + reqFile.path.slice(reqFile.path.indexOf('assets'));
             }

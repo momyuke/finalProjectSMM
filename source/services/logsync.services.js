@@ -21,7 +21,6 @@ class LogSyncServices {
                         ['id', 'ASC']
                     ]
                 });
-
             if(dataLog){
                 result = {
                     version : dataLog[dataLog.length - 1].id,
@@ -33,6 +32,7 @@ class LogSyncServices {
                 logTitle: '[GET-LOG-SYNC-ERROR]',
                 logMessage: e
             });
+            throw new Error(e);
         }
         return result;
     }
