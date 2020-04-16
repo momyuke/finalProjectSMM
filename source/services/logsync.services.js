@@ -21,7 +21,7 @@ class LogSyncServices {
                         ['id', 'ASC']
                     ]
                 });
-            if(dataLog){
+            if(dataLog.length > 0){
                 result = {
                     version : dataLog[dataLog.length - 1].id,
                     data : dataLog

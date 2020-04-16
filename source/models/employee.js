@@ -3,8 +3,7 @@ const connection = require('../../dbConn');
 
 const Employee = connection.define('employee',{
     id : {
-        type: Sequelize.UUID,
-        defaultValue : Sequelize.UUIDV1,
+        type: Sequelize.STRING,
         primaryKey : true,
         allowNull : false
     },
