@@ -5,6 +5,7 @@ const pdf = require('html-pdf');
 const path = require('path');
 const fs = require('fs');
 const moment = require('moment');
+const {hoursofWork} = require('../services/sub-services')
 
 async function controlReportPdf(req, res) {
     try {
@@ -17,19 +18,24 @@ async function controlReportPdf(req, res) {
         const dataEmployee = await Employee.findByPk(employeeId);
         const nameofFile = `Report-${dataEmployee.firstName}-${moment().format('YYYY-MM-DD_HH-mm-ss')}`;
         const title = `Report Attendace ${dataEmployee.firstName}`
+        const photoUrl = dataEmployee.photoUrl !== null ? dataEmployee.photoUrl : '/assets/images/default.jpg'
         const dataContent = [];
         dataReport.forEach((data) => {
+            let hourWork  = " ";
+            data.inTime !== null && data.outTime !== null ? hourWork = hoursofWork(data.inTime, data.outTime) : null;
             dataContent.push({
                 "dateReport": data.dateReport,
                 "inTime": data.inTime,
-                "outTime": data.outTime
+                "outTime": data.outTime,
+                "hourOfWork" : hourWork
             });
         });
 
         ejs.renderFile(path.join(__dirname, '../../assets/report/content.ejs'), {
             title: title,
-            header: ['Tanggal', 'Jam Masuk', 'Jam Keluar'],
+            header: ['Tanggal', 'Jam Masuk', 'Jam Keluar', "Jumlah Jam Kerja"],
             content: dataContent
+            // photoUrl: photoUrl
         }, (err, data) => {
             if (err) {
                 throw new Error(err.message)

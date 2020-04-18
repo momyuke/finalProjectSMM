@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <style>
+        .item1 {
+            grid-column: 1;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
 
-        table, th, td {
+        table,
+        th,
+        td {
             border: 1px solid black;
             padding: 10px;
         }
@@ -17,29 +24,34 @@
         }
     </style>
 </head>
+
 <body>
-<div>
-    <h3><%= title %></h3>
-    <table>
-        <thead>
-        <tr>
-            <% header.forEach(h => { %>
-                <th><%= h %></th>
-            <% }); %>
-        </tr>
-        </thead>
-        <tbody>
-        <% if (content.length > 0) { %>
-            <% content.forEach(cnt => { %>
+    <div>
+        <h3 align="center"><%= title %></h3>
+        <div class="item1">
+            <img src=/assets/images/default.jpg" />
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <% header.forEach(h => { %>
+                    <th><%= h %></th>
+                    <% }); %>
+                </tr>
+            </thead>
+            <tbody align="center">
+                <% if (content.length > 0) { %>
+                <% content.forEach(cnt => { %>
                 <tr>
                     <% for(var p in cnt) { %>
-                        <td><%= cnt[p] %></td>
+                    <td><%= cnt[p] %></td>
                     <% }; %>
                 </tr>
-            <% }); %>
-        <% } %>
-        </tbody>
-    </table>
-</div>
+                <% }); %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
 </body>
+
 </html>
