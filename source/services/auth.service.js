@@ -3,7 +3,7 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const logEvent = require('../event/myEmitter');
 const rp = require('request-promise');
-const axios = require('axios');
+const axios = require('axios').default;
 
 class AuthLogin {
     async authenticateGoogleSignIn(user){
@@ -14,6 +14,7 @@ class AuthLogin {
                 result = {message : 'Email is not valid', status : 401};
             }else{
                 let token = await axios.post('http://ec2-18-136-210-143.ap-southeast-1.compute.amazonaws.com:3333/token');
+                
                 result = {user : checkData, token : token.result}
             }
         } catch (e) {
