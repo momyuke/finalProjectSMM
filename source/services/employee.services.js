@@ -3,7 +3,7 @@ const logEvent = require('../event/myEmitter');
 const { Op } = require('sequelize');
 const fs = require('fs');
 const Department = require('../models/department');
-const logSync = require('./sub-services');
+const {logSync} = require('./sub-services');
 const StatusLog = { 'UPDATE': 'UPDATE', 'INSERT': 'INSERT', 'DELETE': 'DELETE' };
 const StatusEmployee = { "ACTIVE": "Active", "INACTIVE": "Inactive" }
 

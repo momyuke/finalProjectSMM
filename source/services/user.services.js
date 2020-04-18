@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const logEvent = require('../event/myEmitter');
-const LogSync = require('./sub-services');
+const {logSync} = require('./sub-services');
 const fs = require('fs');
 const moment = require('moment');
 const StatusLog = {'INSERT': 'INSERT', 'UPDATE' : 'UPDATE', 'DELETE': 'DELETE'};
@@ -31,6 +31,7 @@ class UserServices {
              email : user.email,
              deleteAt : null
          }});
+
       } catch (e) {
           logEvent.emit('APP_ERROR',{
               logTitle : '[GET-USER-FOR-LOGIN-ERROR]',
@@ -58,11 +59,11 @@ class UserServices {
                 user.password = bcrypt.hashSync(user.password, 8);
                 if(!reqFile){
                     result = await User.create(user);
-                    await LogSync(result.id, 'user', StatusLog.INSERT);
+                    await logSync(result.id, 'user', StatusLog.INSERT);
                 }else {
                     user.photoUrl = process.env.PATH_OS + reqFile.path.slice(reqFile.path.indexOf('assets'));
                     result = await User.create(user);
-                    await LogSync(result.id, 'user', StatusLog.INSERT);
+                    await logSync(result.id, 'user', StatusLog.INSERT);
                 }
             }
         }catch(e){
@@ -93,7 +94,7 @@ class UserServices {
 
             if(updateData){
                 result = {message : 'Update user is successfully'}
-                await LogSync(user.id, 'user', StatusLog.UPDATE);
+                await logSync(user.id, 'user', StatusLog.UPDATE);
             }
         } catch (e) {
             logEvent.emit('APP_ERROR', {
@@ -115,7 +116,7 @@ class UserServices {
             }else { 
                 checkUser.deleteAt = moment().toISOString();
                 checkUser.save();
-                await LogSync(checkUser.id, 'user', StatusLog.DELETE)
+                await logSync(checkUser.id, 'user', StatusLog.DELETE)
                 return {message  : 'Delete user is success'};
             }
         } catch (e) {

@@ -36,6 +36,28 @@ class LogSyncServices {
         }
         return result;
     }
+
+    async dumpDataInit(secretKey){
+        let result;
+        try {
+            if(secretKey === process.env.SECRET_KEY){
+                const dataEmployee = await Employee.findAll({include : [Department]});
+                const dataUser = await User.findAll();
+                
+                result = {employee : dataEmployee, user : dataUser}
+            }else{
+                result = {status : 401}
+            }
+        } catch (e) {
+            logEvent.emit('APP_ERROR', {
+                logTitle: '[GET-DUMP-INIT-ERROR]',
+                logMessage: e
+            });
+            throw new Error(e);
+        }
+
+        return result;
+    }
 }
 
 module.exports = LogSyncServices;
