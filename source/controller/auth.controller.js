@@ -11,7 +11,6 @@ class AuthController {
                 res.json({message : Authentication.message});
             } else {
                 res.send(Authentication);
-    
             }
         } catch (e) {
             res.status(500);

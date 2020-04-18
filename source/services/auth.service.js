@@ -5,10 +5,10 @@ const logEvent = require('../event/myEmitter');
 const rp = require('request-promise');
 const axios = require('axios').default;
 
-function getRedisToken() {
+async function getRedisToken(dataUser) {
     let token = await rp.post('http://ec2-18-136-210-143.ap-southeast-1.compute.amazonaws.com:3333/token');
     token = JSON.parse(token);
-    return { user: checkData, token: token.result }
+    return { user: dataUser, token: token.result }
 }
 
 class AuthLogin {
@@ -19,7 +19,7 @@ class AuthLogin {
             if (!checkData) {
                 result = { message: 'Email is not valid', status: 401 };
             } else {
-                result = getRedisToken()
+                result = getRedisToken(checkData)
             }
         } catch (e) {
             logEvent.emit('APP_INFO', {
@@ -44,7 +44,7 @@ class AuthLogin {
             } else {
                 const matchPassword = bcrypt.compareSync(user.password, userLogin.password);
                 if (matchPassword) {
-                    result = getRedisToken();
+                    result = getRedisToken(userLogin);
                 } else {
                     result = { message: "Password is wrong", status: 403 };
                 }
