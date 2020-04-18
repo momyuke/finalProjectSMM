@@ -17,7 +17,7 @@ async function controlReportPdf(req, res) {
         });
         const dataEmployee = await Employee.findByPk(employeeId);
         const nameofFile = `Report-${dataEmployee.firstName}-${moment().format('YYYY-MM-DD_HH-mm-ss')}`;
-        const title = `Report Attendace ${dataEmployee.firstName}`
+        const title = `Report Attendance ${dataEmployee.firstName}`
         const photoUrl = dataEmployee.photoUrl !== null ? dataEmployee.photoUrl : '/assets/images/default.jpg'
         const dataContent = [];
         dataReport.forEach((data) => {

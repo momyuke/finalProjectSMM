@@ -13,7 +13,7 @@ const Employee = connection.define('employee',{
     },
 
     firstName : {
-        type : Sequelize.STRING,
+        type : Sequelize.STRING
     }, 
     lastName : {
         type: Sequelize.STRING
@@ -21,6 +21,10 @@ const Employee = connection.define('employee',{
 
     gender : {
         type : Sequelize.ENUM('Male', 'Female')
+    },
+
+    address : {
+        type : Sequelize.STRING
     },
 
     dateofbirth:{
