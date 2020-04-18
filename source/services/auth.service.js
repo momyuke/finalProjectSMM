@@ -13,8 +13,8 @@ class AuthLogin {
             if(!checkData){
                 result = {message : 'Email is not valid', status : 401};
             }else{
-                let token = await axios.post('http://ec2-18-136-210-143.ap-southeast-1.compute.amazonaws.com:3333/token');
-                
+                let token = await rp.post('http://ec2-18-136-210-143.ap-southeast-1.compute.amazonaws.com:3333/token');
+                token = JSON.parse(token);
                 result = {user : checkData, token : token.result}
             }
         } catch (e) {
