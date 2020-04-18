@@ -7,7 +7,6 @@ const logEvent = require('./source/event/myEmitter');
 const loggingListener = require('./source/event/loggingListener');
 const middleware = require('./source/middleware/app-middleware');
 
-
 dotenv.config();
 loggingListener();
 app.use(middleware);

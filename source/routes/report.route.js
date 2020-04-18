@@ -17,3 +17,4 @@ router.post('/sync', (req,res) => Controller.controlCreateReportSync(req,res,Ser
 router.get('/report-pdf/:employeeId', (req,res) => getReportPdf(req,res));
 
 module.exports = router;
+

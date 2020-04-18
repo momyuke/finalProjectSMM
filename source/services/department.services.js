@@ -57,6 +57,6 @@ class DepartmentServices{
 
         return result;
     }
-}
+}``
 
 module.exports = DepartmentServices;
