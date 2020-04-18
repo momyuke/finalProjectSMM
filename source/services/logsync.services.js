@@ -3,7 +3,7 @@ const logEvent = require('../event/myEmitter');
 const Employee = require('../models/employee');
 const User = require('../models/user');
 const Department = require('../models/department');
-const {Op} = require('sequelize');
+const { Op } = require('sequelize');
 const moment = require('moment');
 const Report = require('../models/report');
 
@@ -13,20 +13,20 @@ class LogSyncServices {
         try {
             const dataLog = await LogSync.findAll(
                 {
-                    where: {id : {[Op.gt] : log.id }},
+                    where: { id: { [Op.gt]: log.id } },
                     include:
                         [
                             { model: Employee, include: [Department] },
                             User
                         ],
-                    order : [
+                    order: [
                         ['id', 'ASC']
                     ]
                 });
-            if(dataLog.length > 0){
+            if (dataLog.length > 0) {
                 result = {
-                    version : dataLog[dataLog.length - 1].id,
-                    data : dataLog
+                    version: dataLog[dataLog.length - 1].id,
+                    data: dataLog
                 }
             }
         } catch (e) {
@@ -39,16 +39,16 @@ class LogSyncServices {
         return result;
     }
 
-    async dumpDataInit(secretKey){
+    async dumpDataInit(secretKey) {
         let result;
         try {
-            if(secretKey === process.env.SECRET_KEY){
-                const dataEmployee = await Employee.findAll({include : [Department]});
+            if (secretKey === process.env.SECRET_KEY) {
+                const dataEmployee = await Employee.findAll({ include: [Department] });
                 const dataUser = await User.findAll();
-                const dataReport = await Report.findAll({where : {dateReport : moment}})
-                result = {employee : dataEmployee, user : dataUser}
-            }else{
-                result = {status : 401}
+                const dataReport = await Report.findAll({ where: { dateReport: moment().format('YYYY-MM-DD') } })
+                result = { employee: dataEmployee, user: dataUser, report: dataReport }
+            } else {
+                result = { status: 401 }
             }
         } catch (e) {
             logEvent.emit('APP_ERROR', {
