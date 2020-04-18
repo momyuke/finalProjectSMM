@@ -4,6 +4,8 @@ const Employee = require('../models/employee');
 const User = require('../models/user');
 const Department = require('../models/department');
 const {Op} = require('sequelize');
+const moment = require('moment');
+const Report = require('../models/report');
 
 class LogSyncServices {
     async getLogSync(log) {
@@ -43,7 +45,7 @@ class LogSyncServices {
             if(secretKey === process.env.SECRET_KEY){
                 const dataEmployee = await Employee.findAll({include : [Department]});
                 const dataUser = await User.findAll();
-                
+                const dataReport = await Report.findAll({where : {dateReport : moment}})
                 result = {employee : dataEmployee, user : dataUser}
             }else{
                 result = {status : 401}
