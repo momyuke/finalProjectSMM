@@ -118,21 +118,34 @@ class EmployeeService {
         let result;
         try {
 
-            if (employee.firstName) {
-                result = await Employee.findOne({
-                    where: {
-                        firstName: { [Op.like]: `%${employee.firstName}%` },
+            if(employee.firstName || employee.lastName){
+                result = await Employee.findAll({
+                    where : {
+                        [Op.or] : {
+                            firstName: { [Op.like ]: `%${employee.firstName}%` },
+                            lastName : { [Op.like ]: `%${employee.lastName}%` },
+                        },
                         status: StatusEmployee.ACTIVE
+
                     }
-                });
-            } else if (employee.lastName) {
-                result = await Employee.findOne({
-                    where: {
-                        lastName: { [Op.like]: `%${employee.lastName}%` },
-                        status: StatusEmployee.INACTIVE
-                    }
-                });
+                })
             }
+
+            // if (employee.firstName) {
+            //     result = await Employee.findAll({
+            //         where: {
+            //             firstName: { [Op. ]: `%${employee.firstName}%` },
+            //             status: StatusEmployee.ACTIVE
+            //         }
+            //     });
+            // } else if (employee.lastName) {
+            //     result = await Employee.findAll({
+            //         where: {
+            //             lastName: { [Op.like]: `%${employee.lastName}%` },
+            //             status: StatusEmployee.INACTIVE
+            //         }
+            //     });
+            // }
 
         } catch (e) {
             logEvent.emit('APP_ERROR', {

@@ -333,6 +333,25 @@ class ReportClass {
         return result;
     }
 
+    async getReportByDepartment(departmentId) {
+        let result;
+        try {
+            result = await Report.findAll({
+                include: [Employee], 
+                where: {
+                    '$Employee.departmentId$' : departmentId
+                }
+            });
+        } catch (e) {
+            logEvent.emit('APP_ERROR', {
+                logTitle: '[GET-HISTORY-BY-IN-DATE-NOW-ERROR]',
+                logMessage: e
+            });
+            throw new Error(e);
+        }
+        return result;
+    }
+
 
 }
 

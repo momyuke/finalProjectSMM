@@ -10,6 +10,7 @@ const Controller = new ReportController();
 const Services = new ReportServices();
 
 router.use(tokenValidation);
+router.get('/department/:departmentId',(req,res) => Controller.controlGetReportByDepartment(req,res,Services));
 router.get('/datenow/:id?', (req,res) => Controller.getReport(req,res,Services));
 router.get('/:id?', (req,res) => Controller.controlGetReport(req,res,Services));
 router.post('/', (req,res) => Controller.controlCreateReport(req,res,Services));

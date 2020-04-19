@@ -16,15 +16,21 @@ class ReportController {
         }
     }
 
-    async controllerGetReportMonth(req,res,services){
+    async controlGetReportByDepartment(req,res,services){
         try {
-            let result = await services.getReportByMonthNow();
-            res.send(result);
+            if(req.params.departmentId){
+                let result = await services.getReportByDepartment(req.params.departmentId);
+                res.send(result);
+            }else{
+                res.sendStatus(404);
+            }
         } catch (e) {
             res.status(500);
-            res.json(e.message)
+            res.json({ message: e.message});
         }
+        
     }
+
     
     async controlCreateReport(req, res, services) {
         try {
