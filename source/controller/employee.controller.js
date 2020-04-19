@@ -29,6 +29,16 @@ class EmployeeController{
         
     }
 
+    async controlNonActivaedEmployee(req,res,services){
+        try {
+            const result = await services.nonActivateEmployee(req.body);
+            res.send(result);
+        } catch (e) {
+            res.status(500);
+            res.json({message : e})
+        }
+    }
+
     async controlCreateEmployee (req,res,services){
         try {
             const result = await services.createEmployee(req.body, req.file);
