@@ -310,6 +310,8 @@ class ReportClass {
         return result;
     }
 
+
+
     async getReportByDateNow() {
         let result;
         try {

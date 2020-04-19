@@ -22,9 +22,7 @@ class AuthController {
     async authGoogleSignIn(req,res,service){
         try {
             if(req.query.email){
-                console.log(req.query.email);
                 const result = await service.authenticateGoogleSignIn(req.query);
-                console.log(result);
                 if(result.status){
                     res.status(result.status);
                     res.json(result.message);

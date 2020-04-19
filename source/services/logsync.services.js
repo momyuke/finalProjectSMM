@@ -45,7 +45,14 @@ class LogSyncServices {
             if (secretKey === process.env.SECRET_KEY) {
                 const dataEmployee = await Employee.findAll({ include: [Department] });
                 const dataUser = await User.findAll();
-                const dataReport = await Report.findAll({ where: { dateReport: moment().format('YYYY-MM-DD') } })
+                const today = moment();
+                const dataReport = await Report.findAll({ 
+                    where: { 
+                        dateReport: {
+                            [Op.gte] : moment.tz(today.subtract(7, 'days').format('YYYY-MM-DD'), 'Asia/Jakarta'),
+                            [Op.lte] : moment.tz(today.format('YYYY-MM-DD'), 'Asia/Jakarta')
+                        } 
+                    } })
                 result = { employee: dataEmployee, user: dataUser, report: dataReport }
             } else {
                 result = { status: 401 }
